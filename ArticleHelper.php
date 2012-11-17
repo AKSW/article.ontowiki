@@ -18,5 +18,14 @@ class ArticleHelper extends OntoWiki_Component_Helper
                 'priority'   => 20
             ));
         }
+
+        if($request->getControllerName() == 'article'){
+            OntoWiki::getInstance ()->getNavigation()->register('article', array(
+                'controller' => 'article',     
+                'action'     => 'edit',        
+                'name'       => 'Article',
+                'priority'   => 1
+            ));
+        }
     }
 }
