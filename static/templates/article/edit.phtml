@@ -1,1 +1,28 @@
-edit
+<!--    
+    SCRIPTING
+-->
+<script type="text/javascript">
+    var articleData = {
+        "imagesPath": "<?php echo $this->articleImagesUrl; ?>",
+        "BBEditor": {
+            "textareaId": "articleContent", 
+            "toolbarId":  "articleToolbar",
+            "toolbarEntries": [
+                { "image": "bold.gif", "name": "boldBtn", "title": "Bold", "type": "bold" },
+                { "image": "italic.gif", "name": "italicBtn", "title": "Italic", "type": "italic" },
+                { "image": "code.gif", "name": "codeBtn", "title": "Code", "type": "code" },
+            ]
+        }
+    };
+</script>
+
+<script type="text/javascript" src="<?php echo $this->articleJavascriptUrl; ?>BBEditor.js"></script>
+
+<!--
+    HTML
+-->
+
+<div>
+    <div id="articleToolbar">ss</div>
+    <textarea id="articleContent"></textarea>
+</div>
