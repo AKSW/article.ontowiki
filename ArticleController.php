@@ -9,6 +9,7 @@ class ArticleController extends OntoWiki_Controller_Component
         
         // set URL for article extension folder
         $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
+        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/static/css/';
         $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/';
         $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/libraries/';
         $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/static/images/';

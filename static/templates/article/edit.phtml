@@ -1,12 +1,14 @@
 <!--    
-    SCRIPTING
+    SCRIPTING stuff
 -->
 <script type="text/javascript">
     var articleData = {
         "imagesPath": "<?php echo $this->articleImagesUrl; ?>",
         "BBEditor": {
-            "textareaId": "articleContent", 
-            "toolbarId":  "articleToolbar",
+            "textareaId": "article-EditorContent", 
+            "toolbarId":  "article-Toolbar",
+            
+            // List of element which will be shown in the toolbar in the given order
             "toolbarEntries": [
                 { "image": "bold.gif", "name": "boldBtn", "title": "Bold", "type": "bold" },
                 { "image": "italic.gif", "name": "italicBtn", "title": "Italic", "type": "italic" },
@@ -19,13 +21,34 @@
     };
 </script>
 
+<!-- Generated Javascript files -->
 <script type="text/javascript" src="<?php echo $this->articleJavascriptUrl; ?>BBEditor.js"></script>
+<script type="text/javascript" src="<?php echo $this->articleJavascriptUrl; ?>EditAction.js"></script>
+
+<!-- Libraries -->
+<script type="text/javascript" src="<?php echo $this->articleJavascriptLibrariesUrl; ?>showdown.js"></script>
+
+<!-- CSS files -->
+<link rel="stylesheet" href="<?php echo $this->articleCssUrl; ?>editAction.css" />
 
 <!--
-    HTML
+    HTML area
 -->
 
-<div>
-    <div id="articleToolbar">ss</div>
-    <textarea id="articleContent"></textarea>
+<div style="min-width: 700px; height: 100%; min-height: 450px; padding: 4px;">    
+    <div>
+        <div id="article-Edit-TabEditor">
+            <div id="article-Toolbar"></div>
+            <textarea id="article-EditorContent"></textarea>
+        </div>
+        <!-- Preview tab -->
+        <div id="article-Edit-TabPreview">
+            
+        </div>
+    </div>
+    <br/>
+    <div style="margin-top: 330px;">
+        <input type="button" value="Editor" id="article-Edit-SwitchEditor"/>
+        <input type="button" value="Preview" id="article-Edit-SwitchPreview"/>
+    </div>
 </div>
