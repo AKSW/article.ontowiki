@@ -53,6 +53,20 @@ var System = (function () {
         }
         eval(call + " = value;");
     }
+    System.setSelectionRange = function setSelectionRange(input, selectionStart, selectionEnd) {
+        if(input.setSelectionRange) {
+            input.focus();
+            input.setSelectionRange(selectionStart, selectionEnd);
+        } else {
+            if(input.createTextRange) {
+                var range = input.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', selectionEnd);
+                range.moveStart('character', selectionStart);
+                range.select();
+            }
+        }
+    }
     System.setupAjax = function setupAjax() {
         $.ajaxSetup({
             "async": true,
@@ -84,9 +98,136 @@ var BBEditor = (function () {
         var img = null;
         for(var i in entries) {
             img = $("<img/>");
-            img.attr("class", this.css_Button).attr("src", this.imagePath + entries[i]["image"]).attr("name", entries[i]["name"]).attr("title", entries[i]["title"]).attr("onclick", entries[i]["onClick"]);
+            img.attr("class", this.css_Button).attr("src", this.imagePath + entries[i]["image"]).attr("name", entries[i]["name"]).attr("title", entries[i]["title"]);
+            this.setToolbarItemClickEvent(img, entries[i]["type"]);
             $("#" + this.toolbarId).append(img);
         }
+    };
+    BBEditor.prototype.setToolbarItemClickEvent = function (img, type) {
+        var clickedFunction = function () {
+        };
+        var defaultText = "";
+        var openingTag = "";
+        var closingTag = "";
+        var textareaId = this.textareaId;
+
+        if(-1 != $.inArray(type, [
+            "bold", 
+            "italic", 
+            "bolditalic", 
+            "codeLine", 
+            "codeBlock"
+        ])) {
+            switch(type) {
+                case "bold": {
+                    openingTag = "**";
+                    defaultText = "bold text";
+                    closingTag = "**";
+                    break;
+
+                }
+                case "italic": {
+                    openingTag = "*";
+                    defaultText = "italic text";
+                    closingTag = "*";
+                    break;
+
+                }
+                case "codeLine": {
+                    openingTag = "`";
+                    defaultText = "code line";
+                    closingTag = "`";
+                    break;
+
+                }
+                case "codeBlock": {
+                    openingTag = "\n```";
+                    defaultText = "\n code block \n";
+                    closingTag = "```\n";
+                    break;
+
+                }
+                default: {
+                    System.out("Type not valid!\n" + type);
+
+                }
+            }
+            clickedFunction = function () {
+                var textarea = $("#" + textareaId);
+                var len = textarea.val().toString();
+                len = len["length"];
+                var start = textarea[0]["selectionStart"];
+                var end = textarea[0]["selectionEnd"];
+                var scrollTop = textarea.scrollTop();
+                var scrollLeft = textarea.scrollLeft();
+                var sel = textarea.val().toString().substring(start, end);
+                if(undefined == sel || "" == sel) {
+                    sel = defaultText;
+                }
+                var rep = openingTag + sel + closingTag;
+                textarea.val(textarea.val().toString().substring(0, start) + rep + textarea.val().toString().substring(end, len));
+                textarea[0]["scrollTop"] = scrollTop;
+                textarea[0]["scrollLeft"] = scrollLeft;
+            };
+        } else {
+            if(-1 != $.inArray(type, [
+                "list", 
+                "h1", 
+                "h2", 
+                "h3", 
+                "h4"
+            ])) {
+                switch(type) {
+                    case "list": {
+                        openingTag = "\n* ";
+                        break;
+
+                    }
+                    case "h1": {
+                        openingTag = "# ";
+                        break;
+
+                    }
+                    case "h2": {
+                        openingTag = "## ";
+                        break;
+
+                    }
+                    case "h3": {
+                        openingTag = "### ";
+                        break;
+
+                    }
+                    case "h4": {
+                        openingTag = "#### ";
+                        break;
+
+                    }
+                    case "quote": {
+                        openingTag = "> ";
+                        break;
+
+                    }
+                    default: {
+                        System.out("Type not valid!\n" + type);
+
+                    }
+                }
+                clickedFunction = function () {
+                    var textarea = $("#" + textareaId);
+                    var scrollTop = textarea.scrollTop();
+                    var scrollLeft = textarea.scrollLeft();
+
+                    textarea.val(textarea.val() + openingTag);
+                    var len = textarea.val().toString();
+                    len = len["length"];
+                    textarea[0]["scrollTop"] = scrollTop;
+                    textarea[0]["scrollLeft"] = scrollLeft;
+                    System.setSelectionRange(document.getElementById(textareaId), len, len);
+                };
+            }
+        }
+        img.click(clickedFunction);
     };
     return BBEditor;
 })();
