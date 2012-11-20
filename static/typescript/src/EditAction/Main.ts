@@ -7,9 +7,7 @@ class EditAction_Main {
      */
     static setupTabSwitcher () : void {
         
-        $("#article-Edit-SwitchEditor").click (EditAction_Event.onClick_SwitchEditor);
-        
-        $("#article-Edit-SwitchPreview").click (EditAction_Event.onClick_SwitchPreview);
+        $("#article-Edit-SwitchEditorPreview").click (EditAction_Event.onClick_SwitchEditorPreview);
         
         $("#article-Edit-TabPreview").hide();
     }
