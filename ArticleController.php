@@ -5,9 +5,9 @@ class ArticleController extends OntoWiki_Controller_Component
     public function init () {
         parent::init();
         $loader = Zend_Loader_Autoloader::getInstance();
-		$loader->registerNamespace('Article_');
-		$path = __DIR__;
-		set_include_path(get_include_path() . PATH_SEPARATOR . $path . DIRECTORY_SEPARATOR .'classes' . DIRECTORY_SEPARATOR . PATH_SEPARATOR);
+        $loader->registerNamespace('Article_');
+        $path = __DIR__;
+        set_include_path(get_include_path() . PATH_SEPARATOR . $path . DIRECTORY_SEPARATOR .'classes' . DIRECTORY_SEPARATOR . PATH_SEPARATOR);
     }
     
     /**
