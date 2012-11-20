@@ -55,7 +55,7 @@ class EditAction_Event {
             );            
             
             $("#article-Edit-SwitchEditorPreview")
-                .attr ("src", articleData ["imagesPath"] + "previewBtn.png");
+                .attr ("src", articleData ["imagesPath"] + "editorBtn.png");
             
             articleData["_showEditorOrPreview"] = "editor";
             
@@ -77,7 +77,7 @@ class EditAction_Event {
                 .fadeIn (150);
                 
             $("#article-Edit-SwitchEditorPreview")
-                .attr ("src", articleData ["imagesPath"] + "editorBtn.png");
+                .attr ("src", articleData ["imagesPath"] + "previewBtn.png");
                 
             articleData["_showEditorOrPreview"] = "preview";
         }

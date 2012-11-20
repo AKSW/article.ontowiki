@@ -104,13 +104,13 @@ var EditAction_Event = (function () {
             $("#article-Edit-TabPreview").css("z-index", "10").fadeIn(150);
             var converter = new Showdown.converter();
             $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-EditorContent").val()));
-            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");
+            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "editorBtn.png");
             articleData["_showEditorOrPreview"] = "editor";
         } else {
             $("#article-Edit-TabPreview").hide().css("z-index", "1");
             $("#article-EditorContent").css("z-index", "10").fadeIn(150);
             $("#article-Toolbar").css("z-index", "10").fadeIn(150);
-            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "editorBtn.png");
+            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");
             articleData["_showEditorOrPreview"] = "preview";
         }
     }
