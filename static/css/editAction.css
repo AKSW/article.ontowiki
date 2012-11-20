@@ -1,9 +1,6 @@
 #article-Edit-TabEditor {
     width: 700px;
     min-height: 300px;
-    position: absolute;
-    top: 16px;
-    left: 15px;
 }
 
 #article-EditorContent {
@@ -16,11 +13,6 @@
 }
 
 #article-Edit-TabPreview {
-    width: 700px;
-    min-height: 300px;
-    position: absolute;
-    top: 30px;
-    left: 18px;
 }
 
 .article-BBEditorButton {
@@ -34,6 +26,5 @@
 
 .article-Button {
     width: 70px;
-    margin-right: 10px;
     cursor: pointer;
 }

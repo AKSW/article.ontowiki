@@ -86,6 +86,26 @@ var System = (function () {
     }
     return System;
 })();
+var Article = (function () {
+    function Article() {
+    }
+    Article.save = function save(r, content) {
+        $.ajax({
+            url: articleData["articleUrl"] + "savearticle/",
+            data: {
+                "r": r,
+                "content": content
+            }
+        }).error(function (xhr, ajaxOptions, thrownError) {
+            System.out("Article > save > error");
+            System.out("response text: " + xhr.responseText);
+            System.out("error: " + thrownError);
+        }).done(function (entries) {
+            console.log(entries);
+        });
+    }
+    return Article;
+})();
 var articleData = articleData || {
 };
 articleData["_showEditorOrPreview"] = "editor";
@@ -95,7 +115,9 @@ $(document).ready(function () {
 var EditAction_Event = (function () {
     function EditAction_Event() { }
     EditAction_Event.ready = function ready() {
+        System.setupAjax();
         EditAction_Main.setupTabSwitcher();
+        $("#article-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
     }
     EditAction_Event.onClick_SwitchEditorPreview = function onClick_SwitchEditorPreview() {
         if("preview" == articleData["_showEditorOrPreview"]) {
@@ -113,6 +135,9 @@ var EditAction_Event = (function () {
             $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");
             articleData["_showEditorOrPreview"] = "preview";
         }
+    }
+    EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
+        Article.save(articleData["r"], $("#article-EditorContent").val());
     }
     return EditAction_Event;
 })();

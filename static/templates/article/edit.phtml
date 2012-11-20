@@ -3,6 +3,8 @@
 -->
 <script type="text/javascript">
     var articleData = {
+        "r": "<?php echo $this->r; ?>",
+        "articleUrl": "<?php echo $this->articleUrl; ?>",
         "imagesPath": "<?php echo $this->articleImagesUrl; ?>",
         "BBEditor": {
             "textareaId": "article-EditorContent", 
@@ -35,18 +37,31 @@
     HTML area
 -->
 
-<div style="min-width: 700px; height: 100%; min-height: 450px; padding: 0px; margin: 0px;">    
-    <div>
-        <div id="article-Edit-TabEditor">
-            <div id="article-Toolbar"></div>
-            <div style="margin-top: 8px;"></div>
-            <textarea id="article-EditorContent"></textarea>
-        </div>
-        <!-- Preview tab -->
-        <div id="article-Edit-TabPreview"></div>
+<div style="width: 700px; padding-left: 5px; margin: 0px;">  
+
+    <div style="margin-top: 14px;"></div>
+  
+    <!-- Editor with toolbar -->
+    <div id="article-Edit-TabEditor">
+        <div id="article-Toolbar"></div>
+        <div style="margin-top: 8px;"></div>
+        <textarea id="article-EditorContent"></textarea>
     </div>
-    <br/>
-    <div style="margin-top: 355px; margin-left: 8px; width: 90%;">
+    
+    <!-- Preview -->
+    <div id="article-Edit-TabPreview"></div>
+    
+    <div style="margin-top: 10px;"></div>
+    
+    <div style="float:left;">
         <img src="<?php echo $this->articleImagesUrl; ?>previewBtn.png" id="article-Edit-SwitchEditorPreview" class="article-Button"/>
     </div>
+    
+    <div style="float:right">
+        <img src="<?php echo $this->articleImagesUrl; ?>saveBtn.png" id="article-SaveBtn" class="article-Button"/>
+    </div>
+    
+    <br/>
+    <br/>
+    
 </div>

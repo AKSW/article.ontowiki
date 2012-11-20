@@ -22,9 +22,19 @@ class EditAction_Event {
     static ready () {
         
         /**
-         * 
+         * Set standard values for ajax related stuff.
+         */
+        System.setupAjax ();
+        
+        /**
+         * Switcher between editor and preview
          */
         EditAction_Main.setupTabSwitcher ();
+        
+        /**
+         * 
+         */
+        $("#article-SaveBtn").click (EditAction_Event.onClick_SaveBtn);
     }
     
     /**
@@ -81,5 +91,15 @@ class EditAction_Event {
                 
             articleData["_showEditorOrPreview"] = "preview";
         }
+    }
+
+    /**
+     * 
+     */
+    static onClick_SaveBtn () {
+        Article.save (
+            articleData ["r"],
+            $("#article-EditorContent").val()
+        );
     }
 }
