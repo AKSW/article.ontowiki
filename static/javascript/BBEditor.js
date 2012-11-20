@@ -91,7 +91,7 @@ var BBEditor = (function () {
         this.imagePath = imagePath;
         this.textareaId = textareaId;
         this.toolbarId = toolbarId;
-        this.css_Button = "BBEditor_Button";
+        this.css_Button = "article-BBEditorButton";
     }
     BBEditor.prototype.outputToolbar = function (entries) {
         $("#" + this.toolbarId).html("");
@@ -172,6 +172,7 @@ var BBEditor = (function () {
         } else {
             if(-1 != $.inArray(type, [
                 "list", 
+                "quote", 
                 "h1", 
                 "h2", 
                 "h3", 
@@ -184,27 +185,27 @@ var BBEditor = (function () {
 
                     }
                     case "h1": {
-                        openingTag = "# ";
+                        openingTag = "\n\n# ";
                         break;
 
                     }
                     case "h2": {
-                        openingTag = "## ";
+                        openingTag = "\n\n## ";
                         break;
 
                     }
                     case "h3": {
-                        openingTag = "### ";
+                        openingTag = "\n\n### ";
                         break;
 
                     }
                     case "h4": {
-                        openingTag = "#### ";
+                        openingTag = "\n\n#### ";
                         break;
 
                     }
                     case "quote": {
-                        openingTag = "> ";
+                        openingTag = "\n\n> ";
                         break;
 
                     }

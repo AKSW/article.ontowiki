@@ -10,12 +10,12 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="48"
-   height="48"
+   width="100"
+   height="40"
    id="svg2985"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="quote.svg"
-   inkscape:export-filename="/home/k00ni/Documents/ow/extensions/article/static/images/quote.png"
+   sodipodi:docname="previewBtn.svg"
+   inkscape:export-filename="/home/k00ni/Documents/ow/extensions/article/static/images/previewBtn.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <sodipodi:namedview
@@ -31,13 +31,13 @@
      inkscape:window-height="743"
      id="namedview8"
      showgrid="false"
-     inkscape:zoom="6.9532167"
-     inkscape:cx="-5.391921"
-     inkscape:cy="25.739936"
+     inkscape:zoom="3.4766083"
+     inkscape:cx="48.500041"
+     inkscape:cy="55.612328"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="text3352" />
+     inkscape:current-layer="text3132" />
   <defs
      id="defs2987" />
   <metadata
@@ -48,36 +48,37 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
      id="text3132"
-     transform="translate(-0.61016949,1.4237288)">
-    <g
-       style="line-height:125%;fill:#000000;font-family:Sans"
-       id="text3352">
-      <path
-         d="M 23.87792,32.367517 13.634947,-0.80046615 26.135488,-0.84889042 31.41598,32.407037 23.875472,32.381751"
-         id="path3357"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccc" />
-      <path
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         d="M 10.833476,32.413778 1.0089552,-0.80199583 12.88737,-0.96988725 17.996574,32.381557 10.83119,32.428115"
-         id="path3357-9"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccc" />
-      <rect
-         style="fill:#000000;fill-opacity:0;stroke:none"
-         id="rect3447"
-         width="35.091671"
-         height="11.793103"
-         x="13.553819"
-         y="34.495533"
-         ry="0.046163607" />
-    </g>
+     transform="translate(-0.61016949,-6.5762712)">
+    <rect
+       style="fill:#d0d0d0;stroke:#828282;stroke-width:0.65000000000000002;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
+       id="rect3019"
+       width="97.239365"
+       height="36.979488"
+       x="2.2549911"
+       y="7.951961"
+       ry="0.13188758" />
+    <text
+       xml:space="preserve"
+       style="font-size:30.61417007000000012px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#1a1a1a;fill-opacity:1;stroke:none;font-family:Sans"
+       x="18.251226"
+       y="31.467739"
+       id="text5456"
+       sodipodi:linespacing="125%"
+       transform="scale(0.95826844,1.0435489)"
+       inkscape:export-filename="/home/k00ni/Documents/ow/extensions/article/static/images/text5456.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5458"
+         x="18.251226"
+         y="31.467739"
+         style="font-size:18.36850165999999973px;fill:#1a1a1a">Preview</tspan></text>
   </g>
 </svg>

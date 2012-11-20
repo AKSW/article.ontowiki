@@ -99,9 +99,11 @@ var EditAction_Event = (function () {
     EditAction_Event.onClick_SwitchEditor = function onClick_SwitchEditor() {
         $("#article-Edit-TabPreview").hide().css("z-index", "1");
         $("#article-EditorContent").css("z-index", "10").fadeIn(150);
+        $("#article-Toolbar").css("z-index", "10").fadeIn(150);
     }
     EditAction_Event.onClick_SwitchPreview = function onClick_SwitchPreview() {
         $("#article-EditorContent").hide().css("z-index", "1");
+        $("#article-Toolbar").hide().css("z-index", "1");
         $("#article-Edit-TabPreview").css("z-index", "10").fadeIn(150);
         var converter = new Showdown.converter();
         $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-EditorContent").val()));

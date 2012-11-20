@@ -36,6 +36,10 @@ class EditAction_Event {
         $("#article-EditorContent")
             .css ( "z-index", "10" )
             .fadeIn (150);
+            
+        $("#article-Toolbar")
+            .css ( "z-index", "10" )
+            .fadeIn (150);
     }
     
     /**
@@ -43,6 +47,10 @@ class EditAction_Event {
      */
     static onClick_SwitchPreview () {
         $("#article-EditorContent")
+            .hide()
+            .css ("z-index", "1");
+            
+        $("#article-Toolbar")
             .hide()
             .css ("z-index", "1");
             

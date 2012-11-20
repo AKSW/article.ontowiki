@@ -14,7 +14,7 @@ class BBEditor {
         this.imagePath = imagePath;
         this.textareaId = textareaId;
         this.toolbarId = toolbarId;
-        this.css_Button = "BBEditor_Button";
+        this.css_Button = "article-BBEditorButton";
     }
     
     /**
@@ -127,7 +127,7 @@ class BBEditor {
         /**
          * If you have only a simple tag to include
          */
-        else if (-1 != $.inArray (type, ["list", "h1", "h2", "h3", "h4"])) {
+        else if (-1 != $.inArray (type, ["list", "quote", "h1", "h2", "h3", "h4"])) {
             
             // set opening and closing tag based on given type
             switch ( type ) {                
@@ -136,23 +136,23 @@ class BBEditor {
                     break;
                 
                 case "h1":
-                    openingTag = "# "; 
+                    openingTag = "\n\n# "; 
                     break;
                 
                 case "h2":
-                    openingTag = "## "; 
+                    openingTag = "\n\n## "; 
                     break;
                 
                 case "h3":
-                    openingTag = "### "; 
+                    openingTag = "\n\n### "; 
                     break;
                     
                 case "h4":
-                    openingTag = "#### "; 
+                    openingTag = "\n\n#### "; 
                     break;
                 
                 case "quote":
-                    openingTag = "> "; 
+                    openingTag = "\n\n> "; 
                     break;
                 
                 default: System.out ( "Type not valid!\n" + type );
