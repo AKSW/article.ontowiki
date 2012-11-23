@@ -36,6 +36,11 @@ class EditAction_Event {
          * 
          */
         $("#article-SaveBtn").click (EditAction_Event.onClick_SaveBtn);
+        
+        /**
+         * 
+         */
+        $("#article-EditorContent").html (articleData["rDescription"]);
     }
     
     /**

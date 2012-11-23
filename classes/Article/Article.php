@@ -13,15 +13,17 @@ class Article_Article {
         $this->_r = $r;
         $this->_m = $m;
         $this->_predicate = $predicate;
-        $this->_resourceInstance = new Article_Resource ( $this->_m );
     }
     
     /**
-     * 
+     * Add content to given resource
      */
     public function create ( $content ) {
-        $this->_resourceInstance->add ( 
-            $this->_r, $this->_predicate, $content
+        
+        $this->_m->addStatement(
+            $this->_r,
+            $this->_predicate, 
+            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL)
         );
         
         return $this;
@@ -61,6 +63,15 @@ class Article_Article {
         );
         
         return 1 > count ( $res ) ? false : $res [0];
+    }
+    
+    /**
+     * Get associated article description text for given resource
+     */
+    public function getDescriptionText () {
+        $d = $this->get();
+        
+        return $d ['o'];
     }
     
     /**

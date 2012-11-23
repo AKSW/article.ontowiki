@@ -119,6 +119,7 @@ var EditAction_Event = (function () {
         System.setupAjax();
         EditAction_Main.setupTabSwitcher();
         $("#article-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
+        $("#article-EditorContent").html(articleData["rDescription"]);
     }
     EditAction_Event.onClick_SwitchEditorPreview = function onClick_SwitchEditorPreview() {
         if("preview" == articleData["_showEditorOrPreview"]) {

@@ -2,12 +2,25 @@
 
 class ArticleController extends OntoWiki_Controller_Component
 {    
+    protected $_r;
+    protected $_rInstance;
+    protected $_article;
+    
     public function init () {
         parent::init();
         $loader = Zend_Loader_Autoloader::getInstance();
         $loader->registerNamespace('Article_');
         $path = __DIR__;
         set_include_path(get_include_path() . PATH_SEPARATOR . $path . DIRECTORY_SEPARATOR .'classes' . DIRECTORY_SEPARATOR . PATH_SEPARATOR);
+        
+        // init necessary 
+        $this->_r = $this->_request->getParam ('r');
+        $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_request->getParam ('r'), $this->_owApp->selectedModel );
+        $this->_article = new Article_Article (
+            $this->_rInstance,                              // Resource for article 
+            $this->_owApp->selectedModel,                   // current selected model instance  
+            'http://purl.org/dc/elements/1.1/description'   // predicate URI between resource and article
+        );
     }
     
     /**
@@ -23,7 +36,10 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/static/images/';
         
         // save given resource
-        $this->view->r = $this->_request->getParam ('r');
+        $this->view->r = $this->_r;
+        
+        // save given resource
+        $this->view->rDescription = $this->_article->getDescriptionText();
         
         /**
          * fill title-field
