@@ -6,7 +6,8 @@
  */
 var articleData = articleData || {};
 
-articleData ["_showEditorOrPreview"] = "editor"; 
+articleData ["_showEditorOrPreview"] = "preview"; 
+articleData ["_article-EditorContent"] = ""; 
 
 /**
  * Event section
@@ -41,31 +42,33 @@ class EditAction_Event {
      * Switch between editor and preview view
      */
     static onClick_SwitchEditorPreview () {
-        
+                
         /**
          * Switch to preview
          */
         if("preview" == articleData["_showEditorOrPreview"]){
-            $("#article-EditorContent")
-                .hide()
-                .css ("z-index", "1");
-                
-            $("#article-Toolbar")
-                .hide()
-                .css ("z-index", "1");
-                
-            $("#article-Edit-TabPreview")
-                .css ( "z-index", "10" )
-                .fadeIn (150);
-                
+            
             // show markdown from editor as HTML
             var converter = new Showdown.converter();
-            $("#article-Edit-TabPreview").html ( 
-                converter.makeHtml($("#article-EditorContent").val()) 
-            );            
+            articleData ["_article-EditorContent"] = $("#article-EditorContent").val();    
             
             $("#article-Edit-SwitchEditorPreview")
                 .attr ("src", articleData ["imagesPath"] + "editorBtn.png");
+            
+            $("#article-invisibleContainer")
+                .html ("")
+                .append ($("#article-visibleContainer").html());
+            
+            $("#article-visibleContainer")
+                .html ("")
+                .append ( $("<div id=\"article-Edit-TabPreview\"></div>") );
+            
+            $("#article-Edit-TabPreview").html ( 
+                converter.makeHtml(articleData ["_article-EditorContent"]) 
+            );
+            
+            $("#article-Edit-TabPreview") 
+                .fadeIn ( 150 );
             
             articleData["_showEditorOrPreview"] = "editor";
             
@@ -74,16 +77,16 @@ class EditAction_Event {
          */
         } else { // = editor
         
-            $("#article-Edit-TabPreview")
-                .hide()
-                .css ("z-index", "1");
+            $("#article-visibleContainer")
+                .html ("")
+                .append ( $("#article-invisibleContainer").html() );
                 
+            $("#article-EditorContent").html ( articleData ["_article-EditorContent"] );
+        
             $("#article-EditorContent")
-                .css ( "z-index", "10" )
                 .fadeIn (150);
                 
             $("#article-Toolbar")
-                .css ( "z-index", "10" )
                 .fadeIn (150);
                 
             $("#article-Edit-SwitchEditorPreview")

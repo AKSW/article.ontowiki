@@ -15,6 +15,13 @@
 #article-Edit-TabPreview {
 }
 
+#article-visibleContainer {
+}
+
+#article-invisibleContainer {
+    display: none;
+}
+
 .article-BBEditorButton {
     width: 12px;
     margin-left: 2px;

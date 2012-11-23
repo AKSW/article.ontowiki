@@ -108,7 +108,8 @@ var Article = (function () {
 })();
 var articleData = articleData || {
 };
-articleData["_showEditorOrPreview"] = "editor";
+articleData["_showEditorOrPreview"] = "preview";
+articleData["_article-EditorContent"] = "";
 $(document).ready(function () {
     EditAction_Event.ready();
 });
@@ -121,17 +122,19 @@ var EditAction_Event = (function () {
     }
     EditAction_Event.onClick_SwitchEditorPreview = function onClick_SwitchEditorPreview() {
         if("preview" == articleData["_showEditorOrPreview"]) {
-            $("#article-EditorContent").hide().css("z-index", "1");
-            $("#article-Toolbar").hide().css("z-index", "1");
-            $("#article-Edit-TabPreview").css("z-index", "10").fadeIn(150);
             var converter = new Showdown.converter();
-            $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-EditorContent").val()));
+            articleData["_article-EditorContent"] = $("#article-EditorContent").val();
             $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "editorBtn.png");
+            $("#article-invisibleContainer").html("").append($("#article-visibleContainer").html());
+            $("#article-visibleContainer").html("").append($("<div id=\"article-Edit-TabPreview\"></div>"));
+            $("#article-Edit-TabPreview").html(converter.makeHtml(articleData["_article-EditorContent"]));
+            $("#article-Edit-TabPreview").fadeIn(150);
             articleData["_showEditorOrPreview"] = "editor";
         } else {
-            $("#article-Edit-TabPreview").hide().css("z-index", "1");
-            $("#article-EditorContent").css("z-index", "10").fadeIn(150);
-            $("#article-Toolbar").css("z-index", "10").fadeIn(150);
+            $("#article-visibleContainer").html("").append($("#article-invisibleContainer").html());
+            $("#article-EditorContent").html(articleData["_article-EditorContent"]);
+            $("#article-EditorContent").fadeIn(150);
+            $("#article-Toolbar").fadeIn(150);
             $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");
             articleData["_showEditorOrPreview"] = "preview";
         }
@@ -145,7 +148,6 @@ var EditAction_Main = (function () {
     function EditAction_Main() { }
     EditAction_Main.setupTabSwitcher = function setupTabSwitcher() {
         $("#article-Edit-SwitchEditorPreview").click(EditAction_Event.onClick_SwitchEditorPreview);
-        $("#article-Edit-TabPreview").hide();
     }
     return EditAction_Main;
 })();
