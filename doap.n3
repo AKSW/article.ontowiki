@@ -23,4 +23,11 @@
   
   owconfig:templates "static/templates" ;
   owconfig:defaultAction "index" ;
-  owconfig:pluginEvent event:onCreateMenu .
+
+  owconfig:hasModule :Articleontology .
+  
+:Articleontology a owconfig:Module ;
+  rdfs:label "Article ontology" ;
+  owconfig:priority "1" ;
+  owconfig:context "main.window.modelinfo" ;
+  owconfig:context "main.window.dashmodelinfo" .

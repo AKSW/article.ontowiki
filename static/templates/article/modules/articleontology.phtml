@@ -1,0 +1,54 @@
+<!--    
+    SCRIPTING stuff
+-->
+<script type="text/javascript">
+    var articleData = {
+        "r": "<?php echo $this->r; ?>",
+        "rDescription": <?php echo json_encode ($this->rDescription); ?>,
+        "articleUrl": "<?php echo $this->articleUrl; ?>",
+        "imagesPath": "<?php echo $this->articleImagesUrl; ?>"
+    };
+</script>
+
+<!-- Generated Javascript files -->
+
+<!-- Libraries -->
+
+<!-- CSS files -->
+<link rel="stylesheet" href="<?php echo $this->articleCssUrl; ?>articleontologyModule.css" />
+
+<!--
+    HTML area
+-->
+
+<div style=""> 
+    
+    <!-- Model has already an associated article -->
+    <?php if (true == $this->moduleHasArticle) { ?>
+    
+        <div style="font-size:12px; color:#737373;">
+            This links brings you to a site where you can change the associated article.
+        </div>
+    
+        <img src="<?php echo $this->articleImagesUrl; ?>pencil.png" align="absmiddle"/>
+        <a href="<?php echo $this->articleUrl .'edit/?r='. $this->selectedModelIri; ?>">
+            Edit associated article</a>
+    
+    <!-- No article is associated with model -->
+    <?php } else { ?>
+        
+        <div style="font-size:12px; color:#737373;">
+            You have the possibility to add a new article to the selected model.
+        </div>
+                
+        <!-- Icon -->
+        <img src="<?php echo $this->articleImagesUrl; ?>add.png" align="absmiddle"/>
+        
+        <!-- Link -->
+        <a href="<?php echo $this->articleUrl .'edit/?r='. $this->selectedModelIri; ?>">
+            Add associated article</a>
+    
+    <?php } ?>
+    
+</div>
+
