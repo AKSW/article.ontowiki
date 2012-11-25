@@ -116,10 +116,21 @@ class EditAction_Event {
     /**
      * 
      */
-    static onClick_SaveBtn () {
+    static onClick_SaveBtn () : void {
         Article.save (
             articleData ["r"],
-            $("#article-EditorContent").val()
+            $("#article-EditorContent").val(),
+            EditAction_Event.onComplete_SaveArticle
         );
+    }
+    
+    /**
+     * 
+     */
+    static onComplete_SaveArticle (entries:string) : void {
+        $("#article-Edit-SavingSuccessNotif")
+            .fadeIn ( 300 )
+            .delay ( 1000 )
+            .fadeOut ( 500 );
     }
 }

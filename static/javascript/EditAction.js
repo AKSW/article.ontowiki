@@ -89,7 +89,7 @@ var System = (function () {
 var Article = (function () {
     function Article() {
     }
-    Article.save = function save(r, content) {
+    Article.save = function save(r, content, callback) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -101,7 +101,7 @@ var Article = (function () {
             System.out("response text: " + xhr.responseText);
             System.out("error: " + thrownError);
         }).done(function (entries) {
-            console.log(entries);
+            callback(entries);
         });
     }
     return Article;
@@ -144,7 +144,10 @@ var EditAction_Event = (function () {
         }
     }
     EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
-        Article.save(articleData["r"], $("#article-EditorContent").val());
+        Article.save(articleData["r"], $("#article-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
+    }
+    EditAction_Event.onComplete_SaveArticle = function onComplete_SaveArticle(entries) {
+        $("#article-Edit-SavingSuccessNotif").fadeIn(300).delay(1000).fadeOut(500);
     }
     return EditAction_Event;
 })();

@@ -35,3 +35,10 @@
     width: 70px;
     cursor: pointer;
 }
+
+#article-Edit-SavingSuccessNotif {
+    display: none;
+    font-weight: bold;
+    color: #496B45;
+    margin-right: 30px;
+}
