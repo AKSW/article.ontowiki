@@ -110,6 +110,8 @@ var articleData = articleData || {
 };
 articleData["_showEditorOrPreview"] = "preview";
 articleData["_article-EditorContent"] = "";
+var BBEditor_Main = BBEditor_Main || {
+};
 $(document).ready(function () {
     EditAction_Event.ready();
 });
@@ -134,6 +136,7 @@ var EditAction_Event = (function () {
         } else {
             $("#article-visibleContainer").html("").append($("#article-invisibleContainer").html());
             $("#article-EditorContent").html(articleData["_article-EditorContent"]);
+            BBEditor_Main.initializeBBEditor(articleData["BBEditor"]["textareaId"], articleData["BBEditor"]["toolbarId"], articleData["imagesPath"], articleData["BBEditor"]["toolbarEntries"]);
             $("#article-EditorContent").fadeIn(150);
             $("#article-Toolbar").fadeIn(150);
             $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");

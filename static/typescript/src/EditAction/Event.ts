@@ -9,6 +9,8 @@ var articleData = articleData || {};
 articleData ["_showEditorOrPreview"] = "preview"; 
 articleData ["_article-EditorContent"] = ""; 
 
+var BBEditor_Main = BBEditor_Main || {};
+
 /**
  * Event section
  */
@@ -87,6 +89,16 @@ class EditAction_Event {
                 .append ( $("#article-invisibleContainer").html() );
                 
             $("#article-EditorContent").html ( articleData ["_article-EditorContent"] );
+            
+            /**
+             * 
+             */
+            BBEditor_Main.initializeBBEditor (
+                articleData ["BBEditor"]["textareaId"],
+                articleData ["BBEditor"]["toolbarId"],
+                articleData ["imagesPath"],
+                articleData ["BBEditor"]["toolbarEntries"]
+            );
         
             $("#article-EditorContent")
                 .fadeIn (150);
