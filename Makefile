@@ -11,6 +11,9 @@ build-javascript:
 	@echo " "
 	@echo "Build static/javascript/EditAction.js ... "
 	tsc --out static/javascript/EditAction.js @static/typescript/tsc_arguments/EditAction.txt
+	@echo " "
+	@echo "Build static/javascript/IndexAction.js ... "
+	tsc --out static/javascript/IndexAction.js @static/typescript/tsc_arguments/IndexAction.txt
 
 install-typescript:
 	sudo apt-get install npm && sudo npm install -g typescript

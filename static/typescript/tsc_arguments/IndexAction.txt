@@ -1,0 +1,5 @@
+static/typescript/src/classes/System.ts
+static/typescript/src/classes/Article.ts
+
+static/typescript/src/IndexAction/Event.ts
+static/typescript/src/IndexAction/Main.ts

@@ -22,5 +22,5 @@
   doap:maintainer <http://aksw.org> ;
   
   owconfig:templates "static/templates" ;
-  owconfig:defaultAction "edit" ;
+  owconfig:defaultAction "index" ;
   owconfig:pluginEvent event:onCreateMenu .

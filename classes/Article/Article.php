@@ -77,6 +77,36 @@ class Article_Article {
     /**
      * 
      */
+    public function getList () {
+        $list = $this->_m->sparqlQuery (
+            "SELECT ?resource ?content
+              WHERE {
+                  ?resource ?p ?content.
+                  ?resource <". $this->_predicate ."> ?content.
+             };" 
+        );
+        
+        $return = array ();
+        $th = new OntoWiki_Model_TitleHelper ($this->_m);
+        
+        foreach ( $list as $entry ) {
+            $th->addResource ( $entry ['resource'] );
+        }
+        
+        foreach ( $list as $entry ) {
+            $return [] = array (
+                'label'     => $th->getTitle ($entry ['resource']),
+                'resource'  => $entry ['resource'],
+                'content'   => $entry ['content']
+            );
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * 
+     */
     public function remove () {
         
         $result = $this->get ();

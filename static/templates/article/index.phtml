@@ -1,0 +1,64 @@
+<!--    
+    SCRIPTING stuff
+-->
+<script type="text/javascript">
+    var articleData = {
+        "r": "<?php echo $this->r; ?>",
+        "rDescription": <?php echo json_encode ($this->rDescription); ?>,
+        "articleUrl": "<?php echo $this->articleUrl; ?>",
+        "imagesPath": "<?php echo $this->articleImagesUrl; ?>"
+    };
+</script>
+
+<!-- Generated Javascript files -->
+<script type="text/javascript" src="<?php echo $this->articleJavascriptUrl; ?>IndexAction.js"></script>
+
+<!-- Libraries -->
+
+<!-- CSS files -->
+<link rel="stylesheet" href="<?php echo $this->articleCssUrl; ?>indexAction.css" />
+
+<!--
+    HTML area
+-->
+
+<div style="width: 700px; padding-left: 10px; padding-top: 10px; margin: 0px;">  
+
+    <!-- There are articles -->
+    <?php if(0 < count($this->articleList)) { ?> 
+    
+        <h3>List of all articles in the selected model</h3>
+
+        <br/>
+    
+        <ul>
+        <?php foreach ( $this->articleList as $article ) { ?>
+        
+            <li>
+                <!-- image -->
+                <img src="<?php echo $this->urimUrl .'?uri='. $article ['resource']; ?>" class="article-Index-ArtImg"/>
+                
+                <!-- article -->
+                <a href="<?php echo $this->owUrl .'article/edit/?r='. $article ['resource']; ?>">
+                    <?php echo $article ['label']; ?>
+                </a>
+                <div style="font-size: 10px; color: #A3A3A3;">
+                    <?php echo $article ['resource']; ?>
+                </div>
+            </li>
+        
+        <?php } ?>
+        </ul>
+        
+    <!-- No articles found -->
+    <?php } else { ?>
+        
+        No articles found in this model!
+        <br/>
+        
+    <?php } ?>
+        
+    <br/>
+    
+</div>
+

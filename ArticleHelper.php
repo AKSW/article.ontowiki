@@ -9,8 +9,10 @@ class ArticleHelper extends OntoWiki_Component_Helper
     {
         // get current request info
         $request  = Zend_Controller_Front::getInstance()->getRequest();
+        $controller = $request->getControllerName();
+        $action = $request->getActionName();
 
-        if(($request->getControllerName() == 'resource' && $request->getActionName() == 'properties')){
+        if(($controller == 'resource' && $action == 'properties')){
             OntoWiki::getInstance ()->getNavigation()->register('article', array(
                 'controller' => 'article',     
                 'action'     => 'edit',        
@@ -19,7 +21,7 @@ class ArticleHelper extends OntoWiki_Component_Helper
             ));
         }
 
-        if($request->getControllerName() == 'article'){
+        if($controller == 'article' && $action == 'edit'){
             OntoWiki::getInstance ()->getNavigation()->register('article', array(
                 'controller' => 'article',     
                 'action'     => 'edit',        
