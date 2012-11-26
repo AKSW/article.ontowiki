@@ -13,19 +13,20 @@
   doap:name "article" ;
   owconfig:privateNamespace <https://github.com/AKSW/article.ontowiki/raw/master/doap.n3#> ;
   owconfig:enabled "true"^^xsd:boolean ;
- 
+
   rdfs:label "Article" ;
   doap:description "Create and maintain articles" ;
- 
+
   owconfig:authorLabel "Konrad Abicht" ;
   owconfig:authorLabel "Lars Eidam" ;
   doap:maintainer <http://aksw.org> ;
-  
+
   owconfig:templates "static/templates" ;
   owconfig:defaultAction "index" ;
-
+  :contentProperty <http://purl.org/dc/elements/1.1/description>;
+  :contentDatatype <http://www.w3.org/2001/XMLSchema#string>;
   owconfig:hasModule :Articleontology .
-  
+
 :Articleontology a owconfig:Module ;
   rdfs:label "Article ontology" ;
   owconfig:priority "1" ;
