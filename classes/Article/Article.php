@@ -21,7 +21,7 @@ class Article_Article {
     public function create ( $content ) {
         
         $this->_m->addStatement(
-            $this->_r,
+            (string) $this->_r,
             $this->_predicate, 
             array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL)
         );
