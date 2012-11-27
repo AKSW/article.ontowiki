@@ -17,8 +17,7 @@
   rdfs:label "Article" ;
   doap:description "Create and maintain articles" ;
 
-  owconfig:authorLabel "Konrad Abicht" ;
-  owconfig:authorLabel "Lars Eidam" ;
+  owconfig:authorLabel "Konrad Abicht and Lars Eidam" ;
   doap:maintainer <http://aksw.org> ;
 
   owconfig:templates "static/templates" ;
