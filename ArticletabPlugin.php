@@ -12,7 +12,7 @@ require_once 'OntoWiki/Plugin.php';
  * @category   OntoWiki
  * @package    Extensions_Semanticsitemap
  */
-class ArticlePlugin extends OntoWiki_Plugin
+class ArticletabPlugin extends OntoWiki_Plugin
 {
 
     public function onRouteStartup($event){
