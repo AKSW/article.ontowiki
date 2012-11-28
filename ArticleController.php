@@ -80,16 +80,38 @@ class ArticleController extends OntoWiki_Controller_Component
         $on = $this->_owApp->getNavigation();
         $on->disableNavigation ();
         
-        // set window title
-        $th = new OntoWiki_Model_TitleHelper ($this->_owApp->selectedModel);
-        $modelLabel = $th->addResource ($this->_owApp->selectedModel->getModelIri())
-                         ->getTitle ($this->_owApp->selectedModel->getModelIri());
-        $this->view->placeholder('main.window.title')
-                   ->set('Article list of model \''. $modelLabel .'\'' );
+        // set filter
+        $instancesconfig = array(
+            'filter' => array(array(
+                "action" => "add",
+                "mode" => "box",
+                "id" => "filterboxundefined",
+                "property" => $this->_contentProperty,
+                "isInverse" => false,
+                "propertyLabel" => "Description",
+                "filter" => "bound",
+                "value1" => null,
+                "value2" => null,
+                "valuetype" => "literal",
+                "literaltype" => null,
+                "hidden" => false,
+                "negate" => false,
+                "objects" => array(array(), null)
+            ))
+        );
         
-        // load article list
-        $this->view->articleList = $this->_article->getList ();
-        
+        // redirect to list controller
+        $this->_helper->redirector(
+            'instances',
+            'resource',
+            null,
+            array(
+                'init'            => 1,
+                'list'            => 'instances',
+                'm'               => urlencode($this->_owApp->selectedModel),
+                'instancesconfig' => urlencode(json_encode($instancesconfig))
+            )
+        );
     }
     
     /**
