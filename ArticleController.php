@@ -5,6 +5,7 @@ class ArticleController extends OntoWiki_Controller_Component
     protected $_r;
     protected $_rInstance;
     protected $_article;
+    protected $_contentProperty;
     
     public function init () {
         parent::init();
@@ -13,13 +14,16 @@ class ArticleController extends OntoWiki_Controller_Component
         $path = __DIR__;
         set_include_path(get_include_path() . PATH_SEPARATOR . $path . DIRECTORY_SEPARATOR .'classes' . DIRECTORY_SEPARATOR . PATH_SEPARATOR);
         
+        // get contentProperty from config
+        $this->_contentProperty = $this->_privateConfig->get('contentProperty');
+        
         // init necessary stuff
         $this->_r = $this->_request->getParam ('r');
         $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_request->getParam ('r'), $this->_owApp->selectedModel );
         $this->_article = new Article_Article (
             $this->_rInstance,                              // Resource for article 
             $this->_owApp->selectedModel,                   // current selected model instance  
-            'http://purl.org/dc/elements/1.1/description'   // predicate URI between resource and article
+            $this->_contentProperty                         // predicate URI between resource and article
         );        
         
         // set URLs
@@ -93,7 +97,7 @@ class ArticleController extends OntoWiki_Controller_Component
         $article = new Article_Article (
             $r,                                             // Resource for article 
             $this->_owApp->selectedModel,                   // current selected model instance  
-            'http://purl.org/dc/elements/1.1/description'   // predicate URI between resource and article
+            $this->_contentProperty                         // predicate URI between resource and article
         );
                 
         /**

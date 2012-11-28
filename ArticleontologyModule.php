@@ -5,6 +5,7 @@ class ArticleontologyModule extends OntoWiki_Module {
     protected $_r;
     protected $_rInstance;
     protected $_article;
+    protected $_contentProperty;
 
     public function init() {
         
@@ -13,6 +14,9 @@ class ArticleontologyModule extends OntoWiki_Module {
         $loader->registerNamespace('Article_');
         $path = __DIR__;
         set_include_path(get_include_path() . PATH_SEPARATOR . $path . DIRECTORY_SEPARATOR .'classes' . DIRECTORY_SEPARATOR . PATH_SEPARATOR);
+        
+        // get contentProperty from config
+        $this->_contentProperty = $this->_privateConfig->get('contentProperty');
         
         // init necessary stuff
         $this->_r = $this->_request->getParam ('r');
@@ -23,7 +27,7 @@ class ArticleontologyModule extends OntoWiki_Module {
         $this->_article = new Article_Article (
             $this->_rInstance,                              // Resource for article 
             $this->_owApp->selectedModel,                   // current selected model instance  
-            'http://purl.org/dc/elements/1.1/description'   // predicate URI between resource and article
+            $this->_contentProperty                         // predicate URI between resource and article
         ); 
     }
 
