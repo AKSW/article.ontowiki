@@ -7,27 +7,27 @@ class ArticleHelper extends OntoWiki_Component_Helper
      */
     public function init()
     {
+        //Ontowiki Navigation
+        $navigation = OntoWiki::getInstance()->getNavigation();
+
         // get current request info
         $request  = Zend_Controller_Front::getInstance()->getRequest();
         $controller = $request->getControllerName();
         $action = $request->getActionName();
+        
+        // set standard priority
+        $standardPriority = $this->_privateConfig->get('standardPriority');
 
-        if(($controller == 'resource' && $action == 'properties')){
-            OntoWiki::getInstance ()->getNavigation()->register('article', array(
-                'controller' => 'article',     
-                'action'     => 'edit',        
-                'name'       => 'Article',
-                'priority'   => 20
-            ));
+        if(($controller == 'article' && $action == 'edit')){
+            $standardPriority = -1;
         }
+        
+        $navigation->register('article', array(
+            'controller' => 'article',     
+            'action'     => 'edit',        
+            'name'       => 'Article',
+            'priority'   => $standardPriority
+        ));
 
-        if($controller == 'article' && $action == 'edit'){
-            OntoWiki::getInstance ()->getNavigation()->register('article', array(
-                'controller' => 'article',     
-                'action'     => 'edit',        
-                'name'       => 'Article',
-                'priority'   => 1
-            ));
-        }
     }
 }

@@ -11,6 +11,7 @@
 :article a doap:Project ;
 
   doap:name "article" ;
+  owconfig:pluginEvent event:onRouteStartup ;
   owconfig:privateNamespace <https://github.com/AKSW/article.ontowiki/raw/master/doap.n3#> ;
   owconfig:enabled "true"^^xsd:boolean ;
 
@@ -19,11 +20,13 @@
 
   owconfig:authorLabel "Konrad Abicht and Lars Eidam" ;
   doap:maintainer <http://aksw.org> ;
-
+  
   owconfig:templates "static/templates" ;
-  owconfig:defaultAction "index" ;
-  :contentProperty <http://purl.org/dc/elements/1.1/description>;
-  :contentDatatype <http://www.w3.org/2001/XMLSchema#string>;
+  owconfig:defaultAction "edit" ;
+  :contentProperty <http://purl.org/dc/elements/1.1/description> ;
+  :contentDatatype <http://www.w3.org/2001/XMLSchema#string> ;
+  :viewOnClass <http://rdfs.org/sioc/ns#User> ;
+  :standardPriority "20"^^xsd:integer ;
   owconfig:hasModule :Articleontology .
 
 :Articleontology a owconfig:Module ;
