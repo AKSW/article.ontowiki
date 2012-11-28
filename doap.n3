@@ -25,8 +25,9 @@
   owconfig:defaultAction "edit" ;
   :contentProperty <http://purl.org/dc/elements/1.1/description> ;
   :contentDatatype <http://www.w3.org/2001/XMLSchema#string> ;
-  :viewOnClass <http://rdfs.org/sioc/ns#User> ;
+  :viewOnClass <http://rdfs.org/sioc/types#WikiArticle> ;
   :standardPriority "20"^^xsd:integer ;
+  :newArticleResourceType <http://rdfs.org/sioc/types#WikiArticle> ;
   owconfig:hasModule :Articleontology .
 
 :Articleontology a owconfig:Module ;

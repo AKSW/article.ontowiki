@@ -25,9 +25,10 @@ class ArticleontologyModule extends OntoWiki_Module {
             $this->_owApp->selectedModel 
         );
         $this->_article = new Article_Article (
-            $this->_rInstance,                              // Resource for article 
-            $this->_owApp->selectedModel,                   // current selected model instance  
-            $this->_contentProperty                         // predicate URI between resource and article
+            $this->_rInstance,                                     // Resource for article 
+            $this->_owApp->selectedModel,                          // current selected model instance  
+            $this->_contentProperty,                                // predicate URI between resource and article
+            $this->_privateConfig->get('newArticleResourceType')   // article resource type
         ); 
     }
 

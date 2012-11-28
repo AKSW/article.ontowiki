@@ -19,11 +19,19 @@ class ArticleController extends OntoWiki_Controller_Component
         
         // init necessary stuff
         $this->_r = $this->_request->getParam ('r');
-        $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_request->getParam ('r'), $this->_owApp->selectedModel );
+        
+        if ('' != $this->_r)
+        {
+            $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_r, $this->_owApp->selectedModel );
+        }
+        else
+            $this->_rInstance = null;
+            
         $this->_article = new Article_Article (
-            $this->_rInstance,                              // Resource for article 
-            $this->_owApp->selectedModel,                   // current selected model instance  
-            $this->_contentProperty                         // predicate URI between resource and article
+            $this->_rInstance,                                      // Resource for article 
+            $this->_owApp->selectedModel,                           // current selected model instance  
+            $this->_contentProperty,                                // predicate URI between resource and article,
+            $this->_privateConfig->get('newArticleResourceType')   // article resource type
         );        
         
         // set URLs
@@ -42,18 +50,25 @@ class ArticleController extends OntoWiki_Controller_Component
     public function editAction () {
                 
         // save given resource
-        $this->view->r = $this->_r;
+        $this->view->r = $this->_article->getResourceUri();
         
         // save given resource
         $this->view->rDescription = $this->_article->getDescriptionText();
         
-        /**
-         * fill title-field
-         */
-        $th = new OntoWiki_Model_TitleHelper ($this->_owApp->selectedModel);
-        $th->addResource ( $this->view->r );
-        $this->view->placeholder('main.window.title')
-                   ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'' );
+        
+        if (false == $this->_article->getResourceStatus())
+        {
+            /**
+             * fill title-field
+             */
+            $th = new OntoWiki_Model_TitleHelper ($this->_owApp->selectedModel);
+            $th->addResource ( $this->view->r );
+            $this->view->placeholder('main.window.title')
+                       ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'' );
+        }
+        else
+            $this->view->placeholder('main.window.title')
+                       ->set('Add a new article' );
     }
     
     /**
@@ -93,20 +108,14 @@ class ArticleController extends OntoWiki_Controller_Component
          */
         
         $content = $this->_request->getParam ('content');
-        $r = new Erfurt_Rdf_Resource ( $this->_request->getParam ('r'), $this->_owApp->selectedModel );
-        $article = new Article_Article (
-            $r,                                             // Resource for article 
-            $this->_owApp->selectedModel,                   // current selected model instance  
-            $this->_contentProperty                         // predicate URI between resource and article
-        );
                 
         /**
          * Given resource has no article
          */
-        if ( false == $article->exists () ) {
+        if ( false == $this->_article->exists () ) {
             
             // create article with given $content
-            $article->create ($content);
+            $this->_article->create ($content);
             
             $status = 'ok';
             $message = 'Article created';
@@ -117,8 +126,8 @@ class ArticleController extends OntoWiki_Controller_Component
          */
         else {
             
-            $article->remove ();
-            $article->create ($content);
+            $this->_article->remove ();
+            $this->_article->create ($content);
             
             $status = 'ok';
             $message = 'Article updated';

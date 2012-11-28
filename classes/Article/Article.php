@@ -5,20 +5,36 @@ class Article_Article {
     protected $_m;
     protected $_predicate;
     protected $_r;
+    protected $_articleResourceType;
+    protected $_newResource;
     
     /**
      * 
      */
-    function __construct ( Erfurt_Rdf_Resource $r, Erfurt_Rdf_Model $m, $predicate ) {
-        $this->_r = $r;
+    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $articleResourceType ) {
         $this->_m = $m;
+        if (null == $r)
+        {
+            $this->_r = new Erfurt_Rdf_Resource ($m->createResourceUri(), $m);
+            $this->_newResource = true;
+        }
+        else
+        {
+            $this->_r = $r;
+            $this->_newResource = false;
+        }
+
         $this->_predicate = $predicate;
+        
+        $this->_articleResourceType = $articleResourceType;
     }
     
     /**
      * Add content to given resource
      */
     public function create ( $content ) {
+        
+        $this->saveResource();
         
         $this->_m->addStatement(
             (string) $this->_r,
@@ -27,6 +43,35 @@ class Article_Article {
         );
         
         return $this;
+    }
+    
+    /**
+     * Save a Resource, if it is not already in store
+     */
+    public function saveResource () {
+        $res = $this->_m->sparqlQuery (
+            "SELECT ?p ?o
+              WHERE {
+                  <". $this->_r ."> ?p ?o.
+             }
+             LIMIT 1;"
+        );
+        if (0 >= count($res))
+        {
+            $this->_m->addStatement(
+                $this->_r->getUri(),
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                array('value' => $this->_articleResourceType, 'type' => 'uri')
+            );
+        }
+    }
+    
+    /**
+     * Return status of the Resource
+     */
+    public function getResourceStatus()
+    {
+        return $this->_newResource;
     }
     
     /**
@@ -63,6 +108,14 @@ class Article_Article {
         );
         
         return 1 > count ( $res ) ? false : $res [0];
+    }
+    
+    /**
+     * Function return the article resource uri
+     */
+    public function getResourceUri()
+    {
+        return $this->_r->getUri();
     }
     
     /**
