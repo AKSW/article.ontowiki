@@ -48,27 +48,41 @@ class ArticleController extends OntoWiki_Controller_Component
      * 
      */
     public function editAction () {
-                
-        // save given resource
-        $this->view->r = $this->_article->getResourceUri();
-        
-        // save given resource
-        $this->view->rDescription = $this->_article->getDescriptionText();
-        
-        
-        if (false == $this->_article->getResourceStatus())
-        {
-            /**
-             * fill title-field
-             */
-            $th = new OntoWiki_Model_TitleHelper ($this->_owApp->selectedModel);
-            $th->addResource ( $this->view->r );
-            $this->view->placeholder('main.window.title')
-                       ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'' );
+
+        // check whether model is editable
+        if (false == $this->_owApp->selectedModel->isEditable()) {
+            $this->_owApp->appendMessage(
+                new OntoWiki_Message(
+                    'No permissions to edit model.', 
+                    OntoWiki_Message::WARNING
+                )
+            );
+            
+            // disable rendering
+            $this->_helper->viewRenderer->setNoRender();
         }
         else
-            $this->view->placeholder('main.window.title')
-                       ->set('Add a new article' );
+        {
+            // save given resource
+            $this->view->r = $this->_article->getResourceUri();
+            
+            // save given resource
+            $this->view->rDescription = $this->_article->getDescriptionText();
+            
+            if (false == $this->_article->getResourceStatus())
+            {
+                /**
+                 * fill title-field
+                 */
+                $th = new OntoWiki_Model_TitleHelper ($this->_owApp->selectedModel);
+                $th->addResource ( $this->view->r );
+                $this->view->placeholder('main.window.title')
+                           ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'' );
+            }
+            else
+                $this->view->placeholder('main.window.title')
+                           ->set('Add a new article' );
+        }
     }
     
     /**

@@ -36,10 +36,11 @@ class Article_Article {
         
         $this->saveResource();
         
-        $this->_m->addStatement(
+        $this->_m->getStore()->addStatement(
             (string) $this->_r,
             $this->_predicate, 
-            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL)
+            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL),
+            $useAcl = true
         );
         
         return $this;
@@ -58,10 +59,11 @@ class Article_Article {
         );
         if (0 >= count($res))
         {
-            $this->_m->addStatement(
+            $this->_m->getStore()->addStatement(
                 $this->_r->getUri(),
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                array('value' => $this->_articleResourceType, 'type' => 'uri')
+                array('value' => $this->_articleResourceType, 'type' => 'uri'),
+                $useAcl = true
             );
         }
     }
@@ -166,7 +168,7 @@ class Article_Article {
         $s = $result ['s']; $p = $result ['p']; 
         $o = array ( 'type' => Erfurt_Store::TYPE_LITERAL, 'value' => $result ['o'] );
         
-        $this->_m->deleteMatchingStatements ( $s, $p, $o );
+        $this->_m->deleteMatchingStatements ( $s, $p, $o, array('use_ac' => true) );
         
         return $this;
     }
