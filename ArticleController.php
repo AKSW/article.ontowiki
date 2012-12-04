@@ -6,6 +6,7 @@ class ArticleController extends OntoWiki_Controller_Component
     protected $_rInstance;
     protected $_article;
     protected $_contentProperty;
+    protected $_contentDatatype;
     protected $_titleHelper;
     protected $_language;
     
@@ -18,6 +19,9 @@ class ArticleController extends OntoWiki_Controller_Component
         
         // get contentProperty from config
         $this->_contentProperty = $this->_privateConfig->get('contentProperty');
+        
+        // get contentDatatype from config
+        $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
         
         // init necessary stuff
         $this->_r = $this->_request->getParam ('r');
@@ -36,6 +40,7 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->_rInstance,                                      // Resource for article 
             $this->_owApp->selectedModel,                           // current selected model instance  
             $this->_contentProperty,                                // predicate URI between resource and article,
+            $this->_contentDatatype,                               // content datatype
             $this->_privateConfig->get('newArticleResourceType'),   // article resource type
             $this->_language                                        // language
         );        

@@ -4,6 +4,7 @@ class Article_Article {
     
     protected $_m;
     protected $_predicate;
+    protected $_datatype;
     protected $_r;
     protected $_rLabel;
     protected $_articleResourceType;
@@ -13,7 +14,7 @@ class Article_Article {
     /**
      * 
      */
-    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $articleResourceType, $language ) {
+    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $datatype, $articleResourceType, $language ) {
         $this->_m = $m;
         if (null == $r)
         {
@@ -27,6 +28,8 @@ class Article_Article {
         }
         
         $this->_predicate = $predicate;
+        
+        $this->_datatype = $datatype;
         
         $this->_articleResourceType = $articleResourceType;
 
@@ -53,7 +56,7 @@ class Article_Article {
             $this->_m->getModelUri(),
             (string) $this->_r,
             $this->_predicate, 
-            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL),
+            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL, 'datatype' => $this->_datatype),
             $useAcl = true
         );
         
@@ -250,6 +253,11 @@ class Article_Article {
         $s = $result ['s']; $p = $result ['p']; 
         $o = array ( 'type' => Erfurt_Store::TYPE_LITERAL, 'value' => $result ['o'] );
         
+        // delete without datatype tag
+        $this->_m->deleteMatchingStatements ( $s, $p, $o, array('use_ac' => true) );
+        
+        // delete with datatype tag
+        $o['datatype'] = $this->_datatype;
         $this->_m->deleteMatchingStatements ( $s, $p, $o, array('use_ac' => true) );
         
         return $this;
