@@ -89,11 +89,12 @@ var System = (function () {
 var Article = (function () {
     function Article() {
     }
-    Article.save = function save(r, content, callback) {
+    Article.save = function save(r, label, content, callback) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
                 "r": r,
+                "label": label,
                 "content": content
             }
         }).error(function (xhr, ajaxOptions, thrownError) {
@@ -144,7 +145,7 @@ var EditAction_Event = (function () {
         }
     }
     EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
-        Article.save(articleData["r"], $("#article-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
+        Article.save(articleData["r"], $("#article-label-field").val(), $("#article-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
     }
     EditAction_Event.onComplete_SaveArticle = function onComplete_SaveArticle(entries) {
         $("#article-Edit-SavingSuccessNotif").fadeIn(300).delay(1000).fadeOut(500);

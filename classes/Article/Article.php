@@ -5,13 +5,15 @@ class Article_Article {
     protected $_m;
     protected $_predicate;
     protected $_r;
+    protected $_rLabel;
     protected $_articleResourceType;
     protected $_newResource;
+    protected $_language;
     
     /**
      * 
      */
-    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $articleResourceType ) {
+    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $articleResourceType, $language ) {
         $this->_m = $m;
         if (null == $r)
         {
@@ -23,10 +25,19 @@ class Article_Article {
             $this->_r = $r;
             $this->_newResource = false;
         }
-
+        
         $this->_predicate = $predicate;
         
         $this->_articleResourceType = $articleResourceType;
+
+        $this->_language = $language;
+    }
+    
+    /**
+     * Set label of article resource
+     */
+    public function setLabel( $label ) {
+        $this->_rLabel = $label;
     }
     
     /**
@@ -35,6 +46,8 @@ class Article_Article {
     public function create ( $content ) {
         
         $this->saveResource();
+        
+        $this->saveResourceLabel();
         
         $this->_m->getStore()->addStatement(
             $this->_m->getModelUri(),
@@ -54,7 +67,7 @@ class Article_Article {
         $res = $this->_m->sparqlQuery (
             "SELECT ?p ?o
               WHERE {
-                  <". $this->_r ."> ?p ?o.
+                  <". $this->_r->getUri() ."> ?p ?o.
              }
              LIMIT 1;"
         );
@@ -67,6 +80,73 @@ class Article_Article {
                 array('value' => $this->_articleResourceType, 'type' => 'uri'),
                 $useAcl = true
             );
+        }
+    }
+    
+    /**
+     * Save a Resource, if it is not already in store
+     */
+    public function saveResourceLabel () {
+        // get TitleHelper
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper();
+        $this->_titleHelper->reset();
+        $this->_titleHelper->addResource($this->_r->getUri());
+        $oldLabel = $this->_titleHelper->getTitle($this->_r->getUri(), $this->_language);
+        
+        $res = $this->_m->sparqlQuery (
+            "SELECT ?label
+              WHERE {
+                  <". $this->_r->getUri() ."> <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+             }
+             LIMIT 1;"
+        );
+        if (0 < count($res))
+        {
+            if ( $oldLabel != $this->_rLabel)
+            {
+                // delete old label with language tag
+                $this->_m->deleteMatchingStatements (
+                    $this->_r->getUri(),
+                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL, 'lang' => $this->_language ),
+                    array('use_ac' => true)
+                );
+
+                // delete old label without language tag
+                $this->_m->deleteMatchingStatements (
+                    $this->_r->getUri(),
+                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL ),
+                    array('use_ac' => true)
+                );
+                
+                // add new label with language tag
+                if ("" != $this->_rLabel)
+                {
+                    // add new label
+                    $this->_m->getStore()->addStatement(
+                        $this->_m->getModelUri(),
+                        $this->_r->getUri(),
+                        'http://www.w3.org/2000/01/rdf-schema#label',
+                        array( 'value' => $this->_rLabel, 'type' => Erfurt_Store::TYPE_LITERAL, 'lang' => $this->_language ),
+                        $useAcl = true
+                    );
+                }
+            }
+        }
+        else
+        {
+            // if no label is set, set a new one without language tag
+            if ("" != $this->_rLabel)
+            {
+                $this->_m->getStore()->addStatement(
+                    $this->_m->getModelUri(),
+                    $this->_r->getUri(),
+                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    array( 'value' => $this->_rLabel, 'type' => Erfurt_Store::TYPE_LITERAL ),
+                    $useAcl = true
+                );
+            }
         }
     }
     

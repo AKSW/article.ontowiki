@@ -43,7 +43,7 @@
     <div style="margin-top: 14px;"></div>
   
     <div id="article-visibleContainer">
-    
+        
         <!-- Editor with toolbar -->
         <div id="article-Edit-TabEditor">
             <div id="article-Toolbar"></div>
@@ -64,6 +64,12 @@
     
     <div style="float:left;">
         <img src="<?php echo $this->articleImagesUrl; ?>previewBtn.png" id="article-Edit-SwitchEditorPreview" class="article-Button"/>
+    </div>
+    
+    <div style="float:left; text-align:center; width: 80%">
+        <span><?php echo $this->labelLabel; ?> </span>
+        <!-- label input field -->
+        <input type="text" id="article-label-field" name="rlabel" value="<?php echo $this->rLabel; ?>" />
     </div>
     
     <div style="float:right">

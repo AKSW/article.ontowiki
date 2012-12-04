@@ -24,11 +24,18 @@ class ArticleontologyModule extends OntoWiki_Module {
             $this->_owApp->selectedModel->getModelIri(), 
             $this->_owApp->selectedModel 
         );
+        
+        
+        // get language
+        $this->_language = OntoWiki::getInstance()->config->languages->locale;
+        
+        // init article instance
         $this->_article = new Article_Article (
             $this->_rInstance,                                     // Resource for article 
             $this->_owApp->selectedModel,                          // current selected model instance  
-            $this->_contentProperty,                                // predicate URI between resource and article
-            $this->_privateConfig->get('newArticleResourceType')   // article resource type
+            $this->_contentProperty,                               // predicate URI between resource and article
+            $this->_privateConfig->get('newArticleResourceType'),  // article resource type
+            $this->_language                                       // language
         ); 
     }
 

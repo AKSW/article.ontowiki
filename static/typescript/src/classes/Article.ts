@@ -11,11 +11,12 @@ class Article {
     /**
      * Save content for given resource
      */
-    static save (r:string, content:string, callback:any) {
+    static save (r:string, label:string, content:string, callback:any) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
                 "r": r,
+                "label": label,
                 "content": content
             }
         })

@@ -89,11 +89,12 @@ var System = (function () {
 var Article = (function () {
     function Article() {
     }
-    Article.save = function save(r, content, callback) {
+    Article.save = function save(r, label, content, callback) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
                 "r": r,
+                "label": label,
                 "content": content
             }
         }).error(function (xhr, ajaxOptions, thrownError) {

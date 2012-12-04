@@ -6,6 +6,8 @@ class ArticleController extends OntoWiki_Controller_Component
     protected $_rInstance;
     protected $_article;
     protected $_contentProperty;
+    protected $_titleHelper;
+    protected $_language;
     
     public function init () {
         parent::init();
@@ -27,11 +29,15 @@ class ArticleController extends OntoWiki_Controller_Component
         else
             $this->_rInstance = null;
             
+        // get language
+        $this->_language = OntoWiki::getInstance()->config->languages->locale;
+        
         $this->_article = new Article_Article (
             $this->_rInstance,                                      // Resource for article 
             $this->_owApp->selectedModel,                           // current selected model instance  
             $this->_contentProperty,                                // predicate URI between resource and article,
-            $this->_privateConfig->get('newArticleResourceType')   // article resource type
+            $this->_privateConfig->get('newArticleResourceType'),   // article resource type
+            $this->_language                                        // language
         );        
         
         // set URLs
@@ -42,6 +48,10 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/';
         $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/libraries/';
         $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/static/images/';
+        
+        // get TitleHelper
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper();
+        
     }
     
     /**
@@ -65,6 +75,13 @@ class ArticleController extends OntoWiki_Controller_Component
         {
             // save given resource
             $this->view->r = $this->_article->getResourceUri();
+            
+            // get resource label and label of label property
+            $this->_titleHelper->reset();
+            $this->_titleHelper->addResource($this->_article->getResourceUri());
+            $this->view->rLabel = $this->_titleHelper->getTitle($this->_article->getResourceUri(), $this->_language);
+            $this->view->labelLabel = $this->_titleHelper->getTitle('http://www.w3.org/2000/01/rdf-schema#label', $this->_language);
+            
             
             // save given resource
             $this->view->rDescription = $this->_article->getDescriptionText();
@@ -142,7 +159,8 @@ class ArticleController extends OntoWiki_Controller_Component
         /**
          * 
          */
-        
+
+        $this->_article->setLabel($this->_request->getParam ('label'));
         $content = $this->_request->getParam ('content');
                 
         /**

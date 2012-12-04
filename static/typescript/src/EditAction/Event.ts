@@ -119,6 +119,7 @@ class EditAction_Event {
     static onClick_SaveBtn () : void {
         Article.save (
             articleData ["r"],
+            $("#article-label-field").val(),
             $("#article-EditorContent").val(),
             EditAction_Event.onComplete_SaveArticle
         );
