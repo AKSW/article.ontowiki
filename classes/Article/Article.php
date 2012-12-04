@@ -37,6 +37,7 @@ class Article_Article {
         $this->saveResource();
         
         $this->_m->getStore()->addStatement(
+            $this->_m->getModelUri(),
             (string) $this->_r,
             $this->_predicate, 
             array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL),
@@ -60,6 +61,7 @@ class Article_Article {
         if (0 >= count($res))
         {
             $this->_m->getStore()->addStatement(
+                $this->_m->getModelUri(),
                 $this->_r->getUri(),
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
                 array('value' => $this->_articleResourceType, 'type' => 'uri'),
