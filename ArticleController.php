@@ -42,7 +42,6 @@ class ArticleController extends OntoWiki_Controller_Component
         
         // set URLs
         $this->view->owUrl = $this->_config->staticUrlBase;
-        $this->view->urimUrl = $this->view->owUrl .'urim/';
         $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
         $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/public/css/';
         $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/';
