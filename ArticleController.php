@@ -86,6 +86,7 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->_titleHelper->addResource($this->_article->getResourceUri());
             $this->view->rLabel = $this->_titleHelper->getTitle($this->_article->getResourceUri(), $this->_language);
             $this->view->labelLabel = $this->_titleHelper->getTitle('http://www.w3.org/2000/01/rdf-schema#label', $this->_language);
+            $this->view->labelLabel = ucwords ($this->view->labelLabel);
             
             
             // save given resource

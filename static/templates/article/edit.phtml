@@ -42,6 +42,14 @@
 
     <div style="margin-top: 14px;"></div>
   
+    <div style="width: 80%">
+        <span style="font-weight:bold;"><?php echo $this->labelLabel; ?></span>
+        <!-- label input field -->
+        <input type="text" id="article-label-field" name="rlabel" value="<?php echo $this->rLabel; ?>" style="margin-left: 10px; padding-left:6px; padding-right:6px; padding-bottom:4px; padding-top:4px; border: 1px solid #3D3D3D;"/>
+    </div>
+    
+    <br/>
+  
     <div id="article-visibleContainer">
         
         <!-- Editor with toolbar -->
@@ -63,18 +71,12 @@
     <div style="margin-top: 10px;"></div>
     
     <div style="float:left;">
-        <img src="<?php echo $this->articleImagesUrl; ?>previewBtn.png" id="article-Edit-SwitchEditorPreview" class="article-Button"/>
-    </div>
-    
-    <div style="float:left; text-align:center; width: 80%">
-        <span><?php echo $this->labelLabel; ?> </span>
-        <!-- label input field -->
-        <input type="text" id="article-label-field" name="rlabel" value="<?php echo $this->rLabel; ?>" />
+        <input type="button" class="submit minibutton" value="Show preview" id="article-Edit-SwitchEditorPreview">
     </div>
     
     <div style="float:right">
         <span id="article-Edit-SavingSuccessNotif">Saving successfully!</span>
-        <img src="<?php echo $this->articleImagesUrl; ?>saveBtn.png" id="article-SaveBtn" class="article-Button"/>
+        <input type="button" class="submit minibutton" value="Save changes" id="article-SaveBtn">
     </div>
     
     <br/>
