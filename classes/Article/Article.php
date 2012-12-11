@@ -8,13 +8,15 @@ class Article_Article {
     protected $_r;
     protected $_rLabel;
     protected $_articleResourceType;
+    protected $_articleResourceLabelType;
     protected $_newResource;
     protected $_language;
     
     /**
      * 
      */
-    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m, $predicate, $datatype, $articleResourceType, $language ) {
+    function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m,
+                           $predicate, $datatype, $articleResourceType, $articleResourceLabelType, $language ) {
         $this->_m = $m;
         if (null == $r)
         {
@@ -32,6 +34,7 @@ class Article_Article {
         $this->_datatype = $datatype;
         
         $this->_articleResourceType = $articleResourceType;
+        $this->_articleResourceLabelType = $articleResourceLabelType;
 
         $this->_language = $language;
     }
@@ -99,7 +102,7 @@ class Article_Article {
         $res = $this->_m->sparqlQuery (
             "SELECT ?label
               WHERE {
-                  <". $this->_r->getUri() ."> <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+                  <". $this->_r->getUri() ."> <" . $this->_articleResourceLabelType . "> ?label.
              }
              LIMIT 1;"
         );
@@ -110,7 +113,7 @@ class Article_Article {
                 // delete old label with language tag
                 $this->_m->deleteMatchingStatements (
                     $this->_r->getUri(),
-                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    $this->_articleResourceLabelType,
                     array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL, 'lang' => $this->_language ),
                     array('use_ac' => true)
                 );
@@ -118,7 +121,7 @@ class Article_Article {
                 // delete old label without language tag
                 $this->_m->deleteMatchingStatements (
                     $this->_r->getUri(),
-                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    $this->_articleResourceLabelType,
                     array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL ),
                     array('use_ac' => true)
                 );
@@ -130,7 +133,7 @@ class Article_Article {
                     $this->_m->getStore()->addStatement(
                         $this->_m->getModelUri(),
                         $this->_r->getUri(),
-                        'http://www.w3.org/2000/01/rdf-schema#label',
+                        $this->_articleResourceLabelType,
                         array( 'value' => $this->_rLabel, 'type' => Erfurt_Store::TYPE_LITERAL, 'lang' => $this->_language ),
                         $useAcl = true
                     );
@@ -145,7 +148,7 @@ class Article_Article {
                 $this->_m->getStore()->addStatement(
                     $this->_m->getModelUri(),
                     $this->_r->getUri(),
-                    'http://www.w3.org/2000/01/rdf-schema#label',
+                    $this->_articleResourceLabelType,
                     array( 'value' => $this->_rLabel, 'type' => Erfurt_Store::TYPE_LITERAL ),
                     $useAcl = true
                 );

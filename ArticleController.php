@@ -36,12 +36,13 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
         
         $this->_article = new Article_Article (
-            $this->_rInstance,                                      // Resource for article 
-            $this->_owApp->selectedModel,                           // current selected model instance  
-            $this->_contentProperty,                                // predicate URI between resource and article,
-            $this->_contentDatatype,                               // content datatype
-            $this->_privateConfig->get('newArticleResourceType'),   // article resource type
-            $this->_language                                        // language
+            $this->_rInstance,                                          // Resource for article 
+            $this->_owApp->selectedModel,                               // current selected model instance  
+            $this->_contentProperty,                                    // predicate URI between resource and article,
+            $this->_contentDatatype,                                    // content datatype
+            $this->_privateConfig->get('newArticleResourceType'),       // article resource type
+            $this->_privateConfig->get('newArticleResourceLabelType'),  // article resource label type
+            $this->_language                                            // language
         );        
         
         // set URLs

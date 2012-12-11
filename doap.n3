@@ -28,6 +28,7 @@
   :viewOnClass <http://rdfs.org/sioc/types#WikiArticle> ;
   :standardPriority "20"^^xsd:integer ;
   :newArticleResourceType <http://rdfs.org/sioc/types#WikiArticle> ;
+  :newArticleResourceLabelType <http://www.w3.org/2000/01/rdf-schema#label> ;
   owconfig:hasModule :Articleontology .
 
 :Articleontology a owconfig:Module ;
