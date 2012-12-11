@@ -21,7 +21,7 @@
   owconfig:authorLabel "Konrad Abicht and Lars Eidam" ;
   doap:maintainer <http://aksw.org> ;
   
-  owconfig:templates "static/templates" ;
+  owconfig:templates "public/templates" ;
   owconfig:defaultAction "edit" ;
   :contentProperty <http://purl.org/dc/elements/1.1/description> ;
   :contentDatatype <http://www.w3.org/2001/XMLSchema#string> ;

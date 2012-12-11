@@ -67,7 +67,7 @@ class ArticleontologyModule extends OntoWiki_Module {
         $this->view->selectedModelIri = $this->_owApp->selectedModel->getModelIri();        
         $this->view->moduleHasArticle = $this->_article->exists();
         
-        return $this->render('static/templates/article/modules/articleontology');
+        return $this->render('public/templates/article/modules/articleontology');
     }
 
 }

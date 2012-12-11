@@ -44,10 +44,10 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->view->owUrl = $this->_config->staticUrlBase;
         $this->view->urimUrl = $this->view->owUrl .'urim/';
         $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
-        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/static/css/';
-        $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/';
-        $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/libraries/';
-        $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/static/images/';
+        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/public/css/';
+        $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/';
+        $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/libraries/';
+        $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/public/images/';
         
         // get TitleHelper
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
