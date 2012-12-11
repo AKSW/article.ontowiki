@@ -28,12 +28,7 @@ class EditAction_Event {
          * Set standard values for ajax related stuff.
          */
         System.setupAjax ();
-        
-        /**
-         * Switcher between editor and preview
-         */
-        EditAction_Main.setupTabSwitcher ();
-        
+                
         /**
          * 
          */
@@ -43,74 +38,20 @@ class EditAction_Event {
          * 
          */
         $("#article-EditorContent").html (articleData["rDescription"]);
-    }
-    
-    /**
-     * Switch between editor and preview view
-     */
-    static onClick_SwitchEditorPreview () {
-                
+        
         /**
-         * Switch to preview
+         * Render markdown if something exists
          */
-        if("preview" == articleData["_showEditorOrPreview"]){
-            
-            // show markdown from editor as HTML
+        var converter = new Showdown.converter();
+        $("#article-Edit-TabPreview").html (
+            converter.makeHtml($("#article-EditorContent").html()) 
+        );
+        
+        $('#article-EditorContent').bind('input propertychange', function() {
             var converter = new Showdown.converter();
-            articleData ["_article-EditorContent"] = $("#article-EditorContent").val();    
-            
-            $("#article-Edit-SwitchEditorPreview")
-                .attr ("src", articleData ["imagesPath"] + "editorBtn.png");
-            
-            $("#article-invisibleContainer")
-                .html ("")
-                .append ($("#article-visibleContainer").html());
-            
-            $("#article-visibleContainer")
-                .html ("")
-                .append ( $("<div id=\"article-Edit-TabPreview\"></div>") );
-            
-            $("#article-Edit-TabPreview").html ( 
-                converter.makeHtml(articleData ["_article-EditorContent"]) 
-            );
-            
-            $("#article-Edit-TabPreview") 
-                .fadeIn ( 150 );
-            
-            articleData["_showEditorOrPreview"] = "editor";
-            
-        /**
-         * Switch to editor
-         */
-        } else { // = editor
-        
-            $("#article-visibleContainer")
-                .html ("")
-                .append ( $("#article-invisibleContainer").html() );
-                
-            $("#article-EditorContent").html ( articleData ["_article-EditorContent"] );
-            
-            /**
-             * 
-             */
-            BBEditor_Main.initializeBBEditor (
-                articleData ["BBEditor"]["textareaId"],
-                articleData ["BBEditor"]["toolbarId"],
-                articleData ["imagesPath"],
-                articleData ["BBEditor"]["toolbarEntries"]
-            );
-        
-            $("#article-EditorContent")
-                .fadeIn (150);
-                
-            $("#article-Toolbar")
-                .fadeIn (150);
-                
-            $("#article-Edit-SwitchEditorPreview")
-                .attr ("src", articleData ["imagesPath"] + "previewBtn.png");
-                
-            articleData["_showEditorOrPreview"] = "preview";
-        }
+            $("#article-Edit-TabPreview")
+                .html (converter.makeHtml($(this).val()));
+        });
     }
 
     /**

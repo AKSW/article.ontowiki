@@ -120,29 +120,14 @@ var EditAction_Event = (function () {
     function EditAction_Event() { }
     EditAction_Event.ready = function ready() {
         System.setupAjax();
-        EditAction_Main.setupTabSwitcher();
         $("#article-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
         $("#article-EditorContent").html(articleData["rDescription"]);
-    }
-    EditAction_Event.onClick_SwitchEditorPreview = function onClick_SwitchEditorPreview() {
-        if("preview" == articleData["_showEditorOrPreview"]) {
+        var converter = new Showdown.converter();
+        $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-EditorContent").html()));
+        $('#article-EditorContent').bind('input propertychange', function () {
             var converter = new Showdown.converter();
-            articleData["_article-EditorContent"] = $("#article-EditorContent").val();
-            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "editorBtn.png");
-            $("#article-invisibleContainer").html("").append($("#article-visibleContainer").html());
-            $("#article-visibleContainer").html("").append($("<div id=\"article-Edit-TabPreview\"></div>"));
-            $("#article-Edit-TabPreview").html(converter.makeHtml(articleData["_article-EditorContent"]));
-            $("#article-Edit-TabPreview").fadeIn(150);
-            articleData["_showEditorOrPreview"] = "editor";
-        } else {
-            $("#article-visibleContainer").html("").append($("#article-invisibleContainer").html());
-            $("#article-EditorContent").html(articleData["_article-EditorContent"]);
-            BBEditor_Main.initializeBBEditor(articleData["BBEditor"]["textareaId"], articleData["BBEditor"]["toolbarId"], articleData["imagesPath"], articleData["BBEditor"]["toolbarEntries"]);
-            $("#article-EditorContent").fadeIn(150);
-            $("#article-Toolbar").fadeIn(150);
-            $("#article-Edit-SwitchEditorPreview").attr("src", articleData["imagesPath"] + "previewBtn.png");
-            articleData["_showEditorOrPreview"] = "preview";
-        }
+            $("#article-Edit-TabPreview").html(converter.makeHtml($(this).val()));
+        });
     }
     EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
         Article.save(articleData["r"], $("#article-label-field").val(), $("#article-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
@@ -154,8 +139,5 @@ var EditAction_Event = (function () {
 })();
 var EditAction_Main = (function () {
     function EditAction_Main() { }
-    EditAction_Main.setupTabSwitcher = function setupTabSwitcher() {
-        $("#article-Edit-SwitchEditorPreview").click(EditAction_Event.onClick_SwitchEditorPreview);
-    }
     return EditAction_Main;
 })();
