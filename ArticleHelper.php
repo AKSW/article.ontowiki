@@ -19,7 +19,7 @@ class ArticleHelper extends OntoWiki_Component_Helper
         $standardPriority = $this->_privateConfig->get('standardPriority');
 
         if(($controller == 'article' && $action == 'edit')){
-            $standardPriority = -1;
+            $standardPriority = 20;
         }
         
         $navigation->register('article', array(
