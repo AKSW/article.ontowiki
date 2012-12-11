@@ -23,10 +23,14 @@ class ArticleController extends OntoWiki_Controller_Component
         // get contentDatatype from config
         $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
         
-        // init necessary stuff
-        $this->_r = $this->_owApp->selectedResource;
-        
-        $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_r, $this->_owApp->selectedModel );
+        if ("" == $this->getParam('createnew')) {
+            // init necessary stuff
+            $this->_r = $this->_owApp->selectedResource;
+            $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_r, $this->_owApp->selectedModel );
+        } else {
+            $this->_r = "";
+            $this->_rInstance = null;
+        }
             
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
@@ -78,6 +82,7 @@ class ArticleController extends OntoWiki_Controller_Component
             // get resource label and label of label property
             $this->_titleHelper->reset();
             $this->_titleHelper->addResource($this->_article->getResourceUri());
+            $this->_titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
             $this->view->rLabel = $this->_titleHelper->getTitle($this->_article->getResourceUri(), $this->_language);
             $this->view->labelLabel = $this->_titleHelper->getTitle('http://www.w3.org/2000/01/rdf-schema#label', $this->_language);
             $this->view->labelLabel = ucwords ($this->view->labelLabel);

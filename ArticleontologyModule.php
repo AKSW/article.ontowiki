@@ -79,6 +79,10 @@ class ArticleontologyModule extends OntoWiki_Module {
         $this->view->selectedModelIri = $this->_owApp->selectedModel->getModelIri();        
         $this->view->moduleHasArticle = $this->_article->exists();
         
+        $titleHelper = new OntoWiki_Model_TitleHelper();
+        $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
+        $this->view->rClassLabel = $titleHelper->getTitle($this->_privateConfig->get('newArticleResourceType'), $this->_language);
+        
         return $this->render('public/templates/article/modules/articleontology');
     }
 

@@ -22,32 +22,18 @@
 -->
 
 <div style=""> 
-    
-    <!-- Model has already an associated article -->
-    <?php if (true == $this->moduleHasArticle) { ?>
-    
-        <span style="font-size:12px; color:#737373;">
-            You can change the associated article by clicking to
-        </span>
-        <img src="<?php echo $this->articleImagesUrl; ?>pencil.png" align="absmiddle"/>
-        <a href="<?php echo $this->articleUrl .'edit/?r='. $this->selectedModelIri; ?>">
-            Edit</a>  
-    
-    <!-- No article is associated with model -->
-    <?php } else { ?>
         
-        <span style="font-size:12px; color:#737373;">
-            You have the possibility to add a new article to the selected model.
-        </span>
-                
-        <!-- Icon -->
-        <img src="<?php echo $this->articleImagesUrl; ?>add.png" align="absmiddle"/>
-        
-        <!-- Link -->
-        <a href="<?php echo $this->articleUrl .'edit/'; ?>">
-            Add</a>
+    <span style="font-size:12px; color:#737373;">
+        You have the possibility to add a new article to the selected model.
+    </span>
+            
+    <!-- Icon -->
+    <img src="<?php echo $this->articleImagesUrl; ?>add.png" align="absmiddle"/>
     
-    <?php } ?>
+    <!-- Link -->
+    <a href="<?php echo $this->articleUrl .'edit/?createnew=true'; ?>">
+        Add <?php echo $this->rClassLabel; ?>
+    </a>
     
     <br/>
     <br/>
