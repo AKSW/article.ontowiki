@@ -49,7 +49,19 @@ class ArticleontologyModule extends OntoWiki_Module {
     }
     
     public function shouldShow(){
-        return true;
+        // Show tab only if model is selected and editable
+        $modelIsSelected = null != OntoWiki::getInstance()->selectedModel;
+        
+        if( true == $modelIsSelected ) {
+            
+            $modelIsEditable = OntoWiki::getInstance()->selectedModel->isEditable();
+            
+            if ( true == $modelIsEditable  ) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public function getContents() {
@@ -58,10 +70,10 @@ class ArticleontologyModule extends OntoWiki_Module {
         $this->view->owUrl = $this->_config->staticUrlBase;
         $this->view->urimUrl = $this->view->owUrl .'urim/';
         $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
-        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/static/css/';
-        $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/';
-        $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/static/javascript/libraries/';
-        $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/static/images/';
+        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/public/css/';
+        $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/';
+        $this->view->articleJavascriptLibrariesUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/libraries/';
+        $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/public/images/';
         
         // set model iri and check if model has already an article
         $this->view->selectedModelIri = $this->_owApp->selectedModel->getModelIri();        
