@@ -24,14 +24,9 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
         
         // init necessary stuff
-        $this->_r = $this->_request->getParam ('r');
+        $this->_r = $this->_owApp->selectedResource;
         
-        if ('' != $this->_r)
-        {
-            $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_r, $this->_owApp->selectedModel );
-        }
-        else
-            $this->_rInstance = null;
+        $this->_rInstance = new Erfurt_Rdf_Resource ( $this->_r, $this->_owApp->selectedModel );
             
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
