@@ -6,11 +6,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
-require_once 'OntoWiki/Plugin.php';
-
 /**
  * @category   OntoWiki
- * @package    Extensions_Semanticsitemap
+ * @package    extensions_article
  */
 class ArticletabPlugin extends OntoWiki_Plugin
 {
@@ -18,7 +16,7 @@ class ArticletabPlugin extends OntoWiki_Plugin
     public function onRouteStartup($event){
         $viewOnClass = $this->_privateConfig->get('viewOnClass');
         $foundViewOnClass = false;
-        
+
         if (isset($_REQUEST['r']))
         {
             $currentResource = $_REQUEST['r'];
@@ -28,7 +26,7 @@ class ArticletabPlugin extends OntoWiki_Plugin
                     <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?uri.
                 };'
             );
-            
+
             foreach ($currentResourceClasses as $currentResourceClass)
             {
                 if ($currentResourceClass['uri'] == $viewOnClass)
@@ -37,14 +35,14 @@ class ArticletabPlugin extends OntoWiki_Plugin
                     break;
                 }
             }
-            
+
             if (true == $foundViewOnClass)
             {
                 // get current route info
                 $front  = Zend_Controller_Front::getInstance();
                 $router = $front->getRouter();
-                
-                // we must set a new route so that the navigation class knows, 
+
+                // we must set a new route so that the navigation class knows,
                 $route = new Zend_Controller_Router_Route(
                     'resource/properties',                       // hijack 'resource/properties' shortcut
                     array(
