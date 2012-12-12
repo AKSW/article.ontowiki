@@ -77,6 +77,10 @@ class ArticleController extends OntoWiki_Controller_Component
         }
         else
         {
+            // fire module context
+            $this->addModuleContext('extension.resourcemodules.linkinghere');
+            $this->addModuleContext('main.window.article.edit');
+
             // save given resource
             $this->view->r = $this->_article->getResourceUri();
             
