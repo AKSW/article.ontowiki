@@ -81,6 +81,24 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->addModuleContext('extension.resourcemodules.linkinghere');
             $this->addModuleContext('main.window.article.edit');
 
+            // creates toolbar and adds two button
+            $toolbar = $this->_owApp->toolbar;
+            $toolbar->appendButton(
+                OntoWiki_Toolbar::CANCEL,
+                array(
+                    'name' => 'Cancel',
+                    'id' => 'article-CancelBtn'
+                )
+            );
+            $toolbar->appendButton(
+                OntoWiki_Toolbar::SAVE,
+                array(
+                    'name' => 'Save Changes',
+                    'id' => 'article-SaveBtn'
+                )
+            );
+            $this->view->placeholder('main.window.toolbar')->set($toolbar);
+
             // save given resource
             $this->view->r = $this->_article->getResourceUri();
 
