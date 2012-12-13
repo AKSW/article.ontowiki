@@ -1,7 +1,13 @@
-<?php 
+<?php
+/**
+ * This file is part of the {@link http://ontowiki.net OntoWiki} project.
+ *
+ * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
 
 class Article_Article {
-    
+
     protected $_m;
     protected $_predicate;
     protected $_datatype;
@@ -11,9 +17,9 @@ class Article_Article {
     protected $_articleResourceLabelType;
     protected $_newResource;
     protected $_language;
-    
+
     /**
-     * 
+     *
      */
     function __construct ( Erfurt_Rdf_Resource $r = null, Erfurt_Rdf_Model $m,
                            $predicate, $datatype, $articleResourceType, $articleResourceLabelType, $language ) {
@@ -28,44 +34,44 @@ class Article_Article {
             $this->_r = $r;
             $this->_newResource = false;
         }
-        
+
         $this->_predicate = $predicate;
-        
+
         $this->_datatype = $datatype;
-        
+
         $this->_articleResourceType = $articleResourceType;
         $this->_articleResourceLabelType = $articleResourceLabelType;
 
         $this->_language = $language;
     }
-    
+
     /**
      * Set label of article resource
      */
     public function setLabel( $label ) {
         $this->_rLabel = $label;
     }
-    
+
     /**
      * Add content to given resource
      */
     public function create ( $content ) {
-        
+
         $this->saveResource();
-        
+
         $this->saveResourceLabel();
-        
+
         $this->_m->getStore()->addStatement(
             $this->_m->getModelUri(),
             (string) $this->_r,
-            $this->_predicate, 
+            $this->_predicate,
             array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL, 'datatype' => $this->_datatype),
             $useAcl = true
         );
-        
+
         return $this;
     }
-    
+
     /**
      * Save a Resource, if it is not already in store
      */
@@ -88,7 +94,7 @@ class Article_Article {
             );
         }
     }
-    
+
     /**
      * Save a Resource, if it is not already in store
      */
@@ -98,7 +104,7 @@ class Article_Article {
         $this->_titleHelper->reset();
         $this->_titleHelper->addResource($this->_r->getUri());
         $oldLabel = $this->_titleHelper->getTitle($this->_r->getUri(), $this->_language);
-        
+
         $res = $this->_m->sparqlQuery (
             "SELECT ?label
               WHERE {
@@ -125,7 +131,7 @@ class Article_Article {
                     array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL ),
                     array('use_ac' => true)
                 );
-                
+
                 // add new label with language tag
                 if ("" != $this->_rLabel)
                 {
@@ -155,7 +161,7 @@ class Article_Article {
             }
         }
     }
-    
+
     /**
      * Return status of the Resource
      */
@@ -163,43 +169,43 @@ class Article_Article {
     {
         return $this->_newResource;
     }
-    
+
     /**
      * Check if an article for the given resource exists.
      * @return bool true if exists, otherwise false
      */
     public function exists () {
-        
+
         $res = $this->_m->sparqlQuery (
-            "SELECT ?s ?p ?o 
+            "SELECT ?s ?p ?o
               WHERE {
                   ?s ?p ?o.
                   ?s <". $this->_predicate ."> ?o.
                   <". $this->_r ."> <". $this->_predicate ."> ?o.
              }
-             LIMIT 1;" 
+             LIMIT 1;"
         );
-        
+
         return 1 > count ( $res ) ? false : true;
     }
-    
+
     /**
      * Get associated article for given resource
      */
     public function get () {
         $res = $this->_m->sparqlQuery (
-            "SELECT ?s ?p ?o 
+            "SELECT ?s ?p ?o
               WHERE {
                   ?s ?p ?o.
                   ?s <". $this->_predicate ."> ?o.
                   <". $this->_r ."> <". $this->_predicate ."> ?o.
              }
-             LIMIT 1;" 
+             LIMIT 1;"
         );
-        
+
         return 1 > count ( $res ) ? false : $res [0];
     }
-    
+
     /**
      * Function return the article resource uri
      */
@@ -207,18 +213,18 @@ class Article_Article {
     {
         return $this->_r->getUri();
     }
-    
+
     /**
      * Get associated article description text for given resource
      */
     public function getDescriptionText () {
         $d = $this->get();
-        
+
         return $d ['o'];
     }
-    
+
     /**
-     * 
+     *
      */
     public function getList () {
         $list = $this->_m->sparqlQuery (
@@ -226,16 +232,16 @@ class Article_Article {
               WHERE {
                   ?resource ?p ?content.
                   ?resource <". $this->_predicate ."> ?content.
-             };" 
+             };"
         );
-        
+
         $return = array ();
         $th = new OntoWiki_Model_TitleHelper ($this->_m);
-        
+
         foreach ( $list as $entry ) {
             $th->addResource ( $entry ['resource'] );
         }
-        
+
         foreach ( $list as $entry ) {
             $return [] = array (
                 'label'     => $th->getTitle ($entry ['resource']),
@@ -243,26 +249,26 @@ class Article_Article {
                 'content'   => $entry ['content']
             );
         }
-        
+
         return $return;
     }
-    
+
     /**
-     * 
+     *
      */
     public function remove () {
-        
+
         $result = $this->get ();
-        $s = $result ['s']; $p = $result ['p']; 
+        $s = $result ['s']; $p = $result ['p'];
         $o = array ( 'type' => Erfurt_Store::TYPE_LITERAL, 'value' => $result ['o'] );
-        
+
         // delete without datatype tag
         $this->_m->deleteMatchingStatements ( $s, $p, $o, array('use_ac' => true) );
-        
+
         // delete with datatype tag
         $o['datatype'] = $this->_datatype;
         $this->_m->deleteMatchingStatements ( $s, $p, $o, array('use_ac' => true) );
-        
+
         return $this;
     }
 }

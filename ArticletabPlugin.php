@@ -12,7 +12,6 @@
  */
 class ArticletabPlugin extends OntoWiki_Plugin
 {
-
     public function onRouteStartup($event){
         $viewOnClass = $this->_privateConfig->get('viewOnClass');
         $foundViewOnClass = false;
