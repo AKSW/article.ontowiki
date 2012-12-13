@@ -92,7 +92,6 @@ class ArticleController extends OntoWiki_Controller_Component
      */
     public function editAction ()
     {
-
         // check whether model is editable
         if (false == $this->_owApp->selectedModel->isEditable()) {
             $this->_owApp->appendMessage(
@@ -105,6 +104,28 @@ class ArticleController extends OntoWiki_Controller_Component
             // disable rendering
             $this->_helper->viewRenderer->setNoRender();
         } else {
+            // fire module context
+            $this->addModuleContext('extension.resourcemodules.linkinghere');
+            $this->addModuleContext('main.window.article.edit');
+
+            // creates toolbar and adds two button
+            $toolbar = $this->_owApp->toolbar;
+            $toolbar->appendButton(
+                OntoWiki_Toolbar::CANCEL,
+                array(
+                    'name' => 'Cancel',
+                    'id' => 'article-CancelBtn'
+                )
+            );
+            $toolbar->appendButton(
+                OntoWiki_Toolbar::SAVE,
+                array(
+                    'name' => 'Save Changes',
+                    'id' => 'article-SaveBtn'
+                )
+            );
+            $this->view->placeholder('main.window.toolbar')->set($toolbar);
+
             // save given resource
             $this->view->r = $this->_article->getResourceUri();
 
@@ -126,9 +147,7 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->view->rDescription = $this->_article->getDescriptionText();
 
             if (false == $this->_article->getResourceStatus()) {
-                /**
-                 * fill title-field
-                 */
+                // fill title-field
                 $th = new OntoWiki_Model_TitleHelper($this->_owApp->selectedModel);
                 $th->addResource($this->view->r);
                 $this->view->placeholder('main.window.title')
@@ -187,25 +206,16 @@ class ArticleController extends OntoWiki_Controller_Component
     /**
      *
      */
-    public function savearticleAction ()
+    public function savearticleAction()
     {
-
-        /**
-         * Disable layout
-         */
+        // Disable layout
         $this->_helper->viewRenderer->setNoRender();
         $this->_helper->layout->disableLayout();
-
-        /**
-         *
-         */
 
         $this->_article->setLabel($this->_request->getParam('label'));
         $content = $this->_request->getParam('content');
 
-        /**
-         * Given resource has no article
-         */
+        // Given resource has no article
         if ( false == $this->_article->exists() ) {
 
             // create article with given $content
@@ -213,12 +223,8 @@ class ArticleController extends OntoWiki_Controller_Component
 
             $status = 'ok';
             $message = 'Article created';
-
-        /**
-         * Given resource has already an article
-         */
         } else {
-
+            // Given resource has already an article
             $this->_article->remove();
             $this->_article->create($content);
 

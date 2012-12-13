@@ -20,7 +20,7 @@
 
   owconfig:authorLabel "Konrad Abicht and Lars Eidam" ;
   doap:maintainer <http://aksw.org> ;
-  
+
   owconfig:templates "public/templates" ;
   owconfig:defaultAction "edit" ;
   :contentProperty <http://purl.org/dc/elements/1.1/description> ;
@@ -34,5 +34,7 @@
 :Articleontology a owconfig:Module ;
   rdfs:label "Article ontology" ;
   owconfig:priority "1" ;
+  owconfig:context "extension.article.articleontology" ;
+  owconfig:context "main.window.article.edit" ;
   owconfig:context "main.window.modelinfo" ;
   owconfig:context "main.window.dashmodelinfo" .

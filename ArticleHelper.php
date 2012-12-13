@@ -18,7 +18,7 @@ class ArticleHelper extends OntoWiki_Component_Helper
             // Show tab only if model is selected and editable
             $modelIsSelected = null != OntoWiki::getInstance()->selectedModel;
 
-            if ( true == $modelIsSelected ) {
+            if (true == $modelIsSelected) {
 
                 $modelIsEditable = OntoWiki::getInstance()->selectedModel->isEditable();
 
