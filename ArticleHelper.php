@@ -61,7 +61,8 @@ class ArticleHelper extends OntoWiki_Component_Helper
             $currentResourceClasses = OntoWiki::getInstance()->selectedModel->sparqlQuery(
                 'SELECT ?uri
                 WHERE {
-                    <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?uri.
+                    <' . $currentResource . '>
+                        <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?uri.
                 };'
             );
 
@@ -79,10 +80,10 @@ class ArticleHelper extends OntoWiki_Component_Helper
 
                 // we must set a new route so that the navigation class knows,
                 $route = new Zend_Controller_Router_Route(
-                    'resource/properties',                       // hijack 'resource/properties' shortcut
+                    'resource/properties',         // hijack 'resource/properties' shortcut
                     array(
                         'controller' => 'article', // map to 'semanticsitemap' controller and
-                        'action'     => 'edit'    // 'sitemap' action
+                        'action'     => 'edit'     // 'sitemap' action
                     )
                 );
                 $route->setMatchedPath('resource/properties');

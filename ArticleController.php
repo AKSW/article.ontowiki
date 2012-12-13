@@ -51,23 +51,36 @@ class ArticleController extends OntoWiki_Controller_Component
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
 
         $this->_article = new Article_Article(
-            $this->_owApp->selectedModel,                               // current selected model instance
-            $this->_contentProperty,                                    // predicate URI between resource and article,
-            $this->_contentDatatype,                                    // content datatype
-            $this->_privateConfig->get('newArticleResourceType'),       // article resource type
-            $this->_privateConfig->get('newArticleResourceLabelType'),  // article resource label type
-            $this->_language,                                           // language
-            $this->_rInstance                                           // Resource for article
+            // current selected model instance
+            $this->_owApp->selectedModel,
+            // predicate URI between resource and article
+            $this->_contentProperty,
+            // content datatype
+            $this->_contentDatatype,
+            // article resource type
+            $this->_privateConfig->get('newArticleResourceType'),
+            // article resource label type
+            $this->_privateConfig->get('newArticleResourceLabelType'),
+            // language
+            $this->_language,
+            // Resource for article
+            $this->_rInstance
         );
 
         // set URLs
         $this->view->owUrl = $this->_config->staticUrlBase;
         $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
-        $this->view->articleCssUrl = $this->_config->staticUrlBase . 'extensions/article/public/css/';
-        $this->view->articleJavascriptUrl = $this->_config->staticUrlBase . 'extensions/article/public/javascript/';
+        $this->view->articleCssUrl =
+            $this->_config->staticUrlBase .
+            'extensions/article/public/css/';
+        $this->view->articleJavascriptUrl =
+            $this->_config->staticUrlBase .
+            'extensions/article/public/javascript/';
         $this->view->articleJavascriptLibrariesUrl =
             $this->_config->staticUrlBase . 'extensions/article/public/javascript/libraries/';
-        $this->view->articleImagesUrl = $this->_config->staticUrlBase . 'extensions/article/public/images/';
+        $this->view->articleImagesUrl =
+            $this->_config->staticUrlBase .
+            'extensions/article/public/images/';
 
         // get TitleHelper
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
@@ -99,7 +112,10 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->_titleHelper->reset();
             $this->_titleHelper->addResource($this->_article->getResourceUri());
             $this->_titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
-            $this->view->rLabel = $this->_titleHelper->getTitle($this->_article->getResourceUri(), $this->_language);
+            $this->view->rLabel = $this->_titleHelper->getTitle(
+                $this->_article->getResourceUri(),
+                $this->_language
+            );
             $this->view->labelLabel = $this->_titleHelper->getTitle(
                 'http://www.w3.org/2000/01/rdf-schema#label',
                 $this->_language

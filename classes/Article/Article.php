@@ -73,7 +73,11 @@ class Article_Article
             $this->_m->getModelUri(),
             (string) $this->_r,
             $this->_predicate,
-            array('value' => $content, 'type' => Erfurt_Store::TYPE_LITERAL, 'datatype' => $this->_datatype),
+            array(
+                'value' => $content,
+                'type' => Erfurt_Store::TYPE_LITERAL,
+                'datatype' => $this->_datatype
+            ),
             $useAcl = true
         );
 
@@ -127,7 +131,10 @@ class Article_Article
                 $this->_m->deleteMatchingStatements(
                     $this->_r->getUri(),
                     $this->_articleResourceLabelType,
-                    array ( 'value' => $oldLabel, 'type' => Erfurt_Store::TYPE_LITERAL, 'lang' => $this->_language ),
+                    array ( 'value' => $oldLabel,
+                        'type' => Erfurt_Store::TYPE_LITERAL,
+                        'lang' => $this->_language
+                    ),
                     array('use_ac' => true)
                 );
 
