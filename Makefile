@@ -28,4 +28,4 @@ MSOURCE = $(CURDIR)/../../application/tests/CodeSniffer/Makefile
 CSSPATH = $(shell dirname $(MSOURCE))/
 
 cs-check:
-	$(CSSPATH)cs-scripts.sh -c "-s --report=full *"
+	$(CSSPATH)cs-scripts.sh -c "-s --report=full *.php */*/*.php"
