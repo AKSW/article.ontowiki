@@ -11,7 +11,7 @@
 :article a doap:Project ;
 
   doap:name "article" ;
-  owconfig:pluginEvent event:onRouteStartup ;
+  owconfig:helperEvent event:onRouteStartup ;
   owconfig:privateNamespace <https://github.com/AKSW/article.ontowiki/raw/master/doap.n3#> ;
   owconfig:enabled "true"^^xsd:boolean ;
 
