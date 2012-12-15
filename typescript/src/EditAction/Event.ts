@@ -32,22 +32,23 @@ class EditAction_Event {
         /**
          * 
          */
-        $("#article-SaveBtn").click (EditAction_Event.onClick_SaveBtn);
+        $("#article-Edit-SaveBtn").unbind();
+        $("#article-Edit-SaveBtn").click (EditAction_Event.onClick_SaveBtn);
         
         /**
          * 
          */
-        $("#article-EditorContent").html (articleData["rDescription"]);
+        $("#article-Edit-EditorContent").html (articleData["rDescription"]);
         
         /**
          * Render markdown if something exists
          */
         var converter = new Showdown.converter();
         $("#article-Edit-TabPreview").html (
-            converter.makeHtml($("#article-EditorContent").html()) 
+            converter.makeHtml($("#article-Edit-EditorContent").html()) 
         );
         
-        $('#article-EditorContent').bind('input propertychange', function() {
+        $('#article-Edit-EditorContent').bind('input propertychange', function() {
             var converter = new Showdown.converter();
             $("#article-Edit-TabPreview")
                 .html (converter.makeHtml($(this).val()));
@@ -60,8 +61,8 @@ class EditAction_Event {
     static onClick_SaveBtn () : void {
         Article.save (
             articleData ["r"],
-            $("#article-label-field").val(),
-            $("#article-EditorContent").val(),
+            $("#article-Edit-LabelField").val(),
+            $("#article-Edit-EditorContent").val(),
             EditAction_Event.onComplete_SaveArticle
         );
     }

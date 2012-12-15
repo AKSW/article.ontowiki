@@ -1,5 +1,0 @@
-public/typescript/src/classes/System.ts
-public/typescript/src/classes/BBEditor.ts
-
-public/typescript/src/BBEditor/Event.ts
-public/typescript/src/BBEditor/Main.ts

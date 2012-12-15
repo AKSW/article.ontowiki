@@ -1,5 +1,0 @@
-public/typescript/src/classes/System.ts
-public/typescript/src/classes/Article.ts
-
-public/typescript/src/EditAction/Event.ts
-public/typescript/src/EditAction/Main.ts

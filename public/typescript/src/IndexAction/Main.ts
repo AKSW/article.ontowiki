@@ -1,3 +1,0 @@
-class IndexAction_Main {
-    
-}
