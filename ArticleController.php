@@ -15,6 +15,7 @@ class ArticleController extends OntoWiki_Controller_Component
     protected $_contentDatatype;
     protected $_titleHelper;
     protected $_language;
+    protected $_newArticleResourceTypeLabel;
 
     public function init ()
     {
@@ -68,23 +69,27 @@ class ArticleController extends OntoWiki_Controller_Component
         );
 
         // set URLs
-        $this->view->owUrl = $this->_config->staticUrlBase;
-        $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
-        $this->view->articleCssUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/css/';
-        $this->view->articleJavascriptUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/javascript/';
-        $this->view->articleJavascriptLibrariesUrl =
-            $this->_config->staticUrlBase . 'extensions/article/public/javascript/libraries/';
-        $this->view->articleImagesUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/images/';
+        $owUrl                              = $this->_config->staticUrlBase;
+        $this->view->owUrl                  = $owUrl;
+        $this->view->articleUrl             = $owUrl.'article/';
+        $this->view->articleImagesUrl       = $owUrl.'extensions/article/public/images/';
 
         // get TitleHelper
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
+        
+        // get label for newArticleResourceType
+        $th = new OntoWiki_Model_TitleHelper();
+        $th->addResource($this->_privateConfig->get('newArticleResourceType'));
+        $this->_newArticleResourceTypeLabel = $th->getTitle(
+            $this->_privateConfig->get('newArticleResourceType'),
+            $this->_language
+        );
 
+        /**
+         * Set module context
+         */
+        $this->addModuleContext('extension.resourcemodules.linkinghere');
+        $this->addModuleContext('main.window.article.edit');
     }
 
     /**
@@ -100,58 +105,66 @@ class ArticleController extends OntoWiki_Controller_Component
                     OntoWiki_Message::WARNING
                 )
             );
-
             // disable rendering
             $this->_helper->viewRenderer->setNoRender();
-        } else {
-            // fire module context
-            $this->addModuleContext('extension.resourcemodules.linkinghere');
-            $this->addModuleContext('main.window.article.edit');
+            // stop further execution of the function
+            return;
+        }
+        
+        /**
+         * Add 2 buttons to the toolbar: save and cancel
+         */
+        $this->_addButtons($this->_owApp->toolbar);
 
-            
-            /**
-             * Add 2 buttons to the toolbar: save and cancel
-             */
-            $this->_addButtons($this->_owApp->toolbar);
-
-            // save given resource
-            $this->view->r = $this->_article->getResourceUri();
-
-            // get resource label and label of label property
-            $this->_titleHelper->reset();
+        $this->_titleHelper->reset();
+        
+        if (false == $this->_article->getResourceStatus()) {
             $this->_titleHelper->addResource($this->_article->getResourceUri());
-            $this->_titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
-            $this->view->rLabel = $this->_titleHelper->getTitle(
-                $this->_article->getResourceUri(),
-                $this->_language
-            );
-            $this->view->labelLabel = $this->_titleHelper->getTitle(
+        }       
+        
+        /**
+         * Get a bunch of labels
+         */
+        $this->_titleHelper->addResource($this->_article->getResourceUri());
+        
+        $this->view->rLabel = $this->_titleHelper->getTitle(
+            $this->_article->getResourceUri(),
+            $this->_language
+        );        
+        $this->view->labelLabel = ucwords(
+            $this->_titleHelper->getTitle(
                 'http://www.w3.org/2000/01/rdf-schema#label',
                 $this->_language
-            );
-            $this->view->labelLabel = ucwords($this->view->labelLabel);
+            )
+        );
 
-            // save given resource
-            $this->view->rDescription = $this->_article->getDescriptionText();
-
-            if (false == $this->_article->getResourceStatus()) {
-                // fill title-field
-                $th = new OntoWiki_Model_TitleHelper($this->_owApp->selectedModel);
-                $th->addResource($this->view->r);
-                $this->view->placeholder('main.window.title')
-                           ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'');
-            }
-            else {
-                $titleHelper = new OntoWiki_Model_TitleHelper();
-                $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
-                $labelArticleResource = $titleHelper->getTitle(
-                    $this->_privateConfig->get('newArticleResourceType'),
-                    $this->_language
-                );
-                $this->view->placeholder('main.window.title')
-                           ->set('Add a new '. $labelArticleResource);
-            }
+        // save given resource
+        $this->view->r              = $this->_article->getResourceUri();
+        $this->view->rDescription   = $this->_article->getDescriptionText();
+           
+        if (false == $this->_article->getResourceStatus()) {
+            $this->view->placeholder('main.window.title')
+               ->set('Set an article for \'' . $this->_titleHelper->getTitle($this->view->r) .'\'');
         }
+        else {
+            $this->view->placeholder('main.window.title')
+               ->set('Add a new '. $this->_newArticleResourceTypeLabel);
+        }
+        
+        /**
+         * Include javascript files
+         */
+        $jsUrl = $this->view->owUrl.'extensions/article/public/javascript/';
+        $this->view->headScript()->appendFile($jsUrl .'/BBEditor.js', 'text/javascript');
+        $this->view->headScript()->appendFile($jsUrl .'/EditAction.js', 'text/javascript');
+        
+        $this->view->headScript()->appendFile($jsUrl .'/libraries/showdown.js', 'text/javascript');
+        
+        /**
+         * Include css files
+         */
+        $cssUrl = $this->view->owUrl.'extensions/article/public/css/';
+        $this->view->headLink()->prependStylesheet($cssUrl.'/editAction.css');
     }
 
     /**

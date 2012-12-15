@@ -90,6 +90,11 @@ var Article = (function () {
     function Article() {
     }
     Article.save = function save(r, label, content, callback) {
+        console.log({
+            "r": r,
+            "label": label,
+            "content": content
+        });
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -102,6 +107,7 @@ var Article = (function () {
             System.out("response text: " + xhr.responseText);
             System.out("error: " + thrownError);
         }).done(function (entries) {
+            console.log(entries);
             callback(entries);
         });
     }
@@ -120,17 +126,18 @@ var EditAction_Event = (function () {
     function EditAction_Event() { }
     EditAction_Event.ready = function ready() {
         System.setupAjax();
-        $("#article-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
-        $("#article-EditorContent").html(articleData["rDescription"]);
+        $("#article-Edit-SaveBtn").unbind();
+        $("#article-Edit-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
+        $("#article-Edit-EditorContent").html(articleData["rDescription"]);
         var converter = new Showdown.converter();
-        $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-EditorContent").html()));
-        $('#article-EditorContent').bind('input propertychange', function () {
+        $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-Edit-EditorContent").html()));
+        $('#article-Edit-EditorContent').bind('input propertychange', function () {
             var converter = new Showdown.converter();
             $("#article-Edit-TabPreview").html(converter.makeHtml($(this).val()));
         });
     }
     EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
-        Article.save(articleData["r"], $("#article-label-field").val(), $("#article-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
+        Article.save(articleData["r"], $("#article-Edit-LabelField").val(), $("#article-Edit-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
     }
     EditAction_Event.onComplete_SaveArticle = function onComplete_SaveArticle(entries) {
         $("#article-Edit-SavingSuccessNotif").fadeIn(300).delay(1000).fadeOut(500);

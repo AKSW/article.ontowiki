@@ -45,7 +45,7 @@ class ArticleontologyModule extends OntoWiki_Module
         $this->view->articleCssUrl      = $owUrl.'extensions/article/public/css/';
         $this->view->articleImagesUrl   = $owUrl.'extensions/article/public/images/';
 
-        // get TitleHelper
+        // get label for newArticleResourceType
         $th = new OntoWiki_Model_TitleHelper();
         $th->addResource($this->_privateConfig->get('newArticleResourceType'));
         $this->_newArticleResourceTypeLabel = $th->getTitle(
