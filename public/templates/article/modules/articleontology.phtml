@@ -1,34 +1,11 @@
-<!--    
-    SCRIPTING stuff
--->
-<script type="text/javascript">
-    var articleData = {
-        "r": "<?php echo $this->r; ?>",
-        "rDescription": <?php echo json_encode ($this->rDescription); ?>,
-        "articleUrl": "<?php echo $this->articleUrl; ?>",
-        "imagesPath": "<?php echo $this->articleImagesUrl; ?>"
-    };
-</script>
-
-<!-- Generated Javascript files -->
-
-<!-- Libraries -->
-
-<!-- CSS files -->
-<link rel="stylesheet" href="<?php echo $this->articleCssUrl; ?>articleontologyModule.css" />
-
-<!--
-    HTML area
--->
-
-<div style=""> 
+<div id="article-ArticleOntologyModule-Content"> 
         
-    <span style="font-size:12px; color:#737373;">
+    <span id="article-ArticleOntologyModule-NotificationText">
         You have the possibility to add a new article to the selected model.
     </span>
             
     <!-- Icon -->
-    <img src="<?php echo $this->articleImagesUrl; ?>add.png" align="absmiddle"/>
+    <img src="<?php echo $this->articleImagesUrl; ?>add.png"/>
     
     <!-- Link -->
     <a href="<?php echo $this->articleUrl .'edit/?createnew=true'; ?>">
@@ -37,12 +14,16 @@
     
     <br/>
     <br/>
+    
     <span style="font-size:12px; color:#737373;">
         Here you will see a list of all articles in this model by clicking to &nbsp;
     </span>
+    
     <img src="<?php echo $this->articleImagesUrl; ?>icon-list.png" align="absmiddle"/>
+    
     <a href="<?php echo $this->articleUrl; ?>">
-        List articles</a>
+        List <?php echo $this->rClassLabel; ?>
+    </a>
     
 </div>
 

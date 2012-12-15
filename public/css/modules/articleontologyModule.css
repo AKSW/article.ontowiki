@@ -1,0 +1,14 @@
+#article-ArticleOntologyModule-Content {
+
+}
+
+#article-ArticleOntologyModule-Content img {
+    width: 20px;
+    border: 0px;
+    vertical-align: absmiddle;
+}
+
+#article-ArticleOntologyModule-NotificationText {
+    font-size: 12px; 
+    color: #737373;
+}

@@ -8,16 +8,13 @@
 
 class ArticleontologyModule extends OntoWiki_Module
 {
+    /**
+     * Label of article resource type
+     */
+    protected $_newArticleResourceTypeLabel = '';
 
-    protected $_r;
-    protected $_rInstance;
-    protected $_article;
-    protected $_contentProperty;
-    protected $_contentDatatype;
-
-    public function init()
+    public function init ()
     {
-
         parent::init();
         $loader = Zend_Loader_Autoloader::getInstance();
         $loader->registerNamespace('Article_');
@@ -37,49 +34,39 @@ class ArticleontologyModule extends OntoWiki_Module
 
         // get contentDatatype from config
         $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
-
-        // init necessary stuff
-        $this->_r = $this->_request->getParam('r');
-        $this->_rInstance = new Erfurt_Rdf_Resource(
-            $this->_owApp->selectedModel->getModelIri(),
-            $this->_owApp->selectedModel
-        );
-
+        
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
 
-        // init article instance
-        $this->_article = new Article_Article(
-            // current selected model instance
-            $this->_owApp->selectedModel,
-            // predicate URI between resource and article
-            $this->_contentProperty,
-            // content datatype
-            $this->_contentDatatype,
-            // article resource type
-            $this->_privateConfig->get('newArticleResourceType'),
-            // article resource label type
-            $this->_privateConfig->get('newArticleResourceLabelType'),
-            // language
-            $this->_language,
-            // Resource for article
-            $this->_rInstance
-        );
-    }
+        // set URLs
+        $owUrl                          = $this->_config->staticUrlBase;
+        $this->view->owUrl              = $owUrl;
+        $this->view->articleUrl         = $owUrl.'article/';
+        $this->view->articleCssUrl      = $owUrl.'extensions/article/public/css/';
+        $this->view->articleImagesUrl   = $owUrl.'extensions/article/public/images/';
 
-    public function getTitle()
-    {
-        $titleHelper = new OntoWiki_Model_TitleHelper();
-        $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
-        return $titleHelper->getTitle(
+        // get TitleHelper
+        $th = new OntoWiki_Model_TitleHelper();
+        $th->addResource($this->_privateConfig->get('newArticleResourceType'));
+        $this->_newArticleResourceTypeLabel = $th->getTitle(
             $this->_privateConfig->get('newArticleResourceType'),
             $this->_language
         );
     }
 
+    /**
+     * @return string Title of the module container
+     */
+    public function getTitle()
+    {
+        return $this->_newArticleResourceTypeLabel;
+    }
+
+    /**
+     * Show tab only if model is selected and editable
+     */
     public function shouldShow()
     {
-        // Show tab only if model is selected and editable
         $modelIsSelected = null != OntoWiki::getInstance()->selectedModel;
 
         if (true == $modelIsSelected) {
@@ -96,33 +83,12 @@ class ArticleontologyModule extends OntoWiki_Module
 
     public function getContents()
     {
+        /**
+         * 
+         */
+        $this->view->headStyle()->prependStyle($this->view->articleCssUrl . 'module/articleontologyModule.css');
 
-        // set URLs
-        $this->view->owUrl = $this->_config->staticUrlBase;
-        $this->view->urimUrl = $this->view->owUrl .'urim/';
-        $this->view->articleUrl = $this->_config->staticUrlBase . 'article/';
-        $this->view->articleCssUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/css/';
-        $this->view->articleJavascriptUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/javascript/';
-        $this->view->articleJavascriptLibrariesUrl =
-            $this->_config->staticUrlBase . 'extensions/article/public/javascript/libraries/';
-        $this->view->articleImagesUrl =
-            $this->_config->staticUrlBase .
-            'extensions/article/public/images/';
-
-        // set model iri and check if model has already an article
-        $this->view->selectedModelIri = $this->_owApp->selectedModel->getModelIri();
-        $this->view->moduleHasArticle = $this->_article->exists();
-
-        $titleHelper = new OntoWiki_Model_TitleHelper();
-        $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
-        $this->view->rClassLabel = $titleHelper->getTitle(
-            $this->_privateConfig->get('newArticleResourceType'),
-            $this->_language
-        );
+        $this->view->rClassLabel = $this->_newArticleResourceTypeLabel;
 
         return $this->render('public/templates/article/modules/articleontology');
     }
