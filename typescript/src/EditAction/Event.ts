@@ -45,7 +45,7 @@ class EditAction_Event {
          */
         var converter = new Showdown.converter();
         $("#article-Edit-TabPreview").html (
-            converter.makeHtml($("#article-Edit-EditorContent").html()) 
+            converter.makeHtml($("#article-Edit-EditorContent").val()) 
         );
         
         $('#article-Edit-EditorContent').bind('input propertychange', function() {

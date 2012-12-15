@@ -124,7 +124,7 @@ var EditAction_Event = (function () {
         $("#article-Edit-SaveBtn").click(EditAction_Event.onClick_SaveBtn);
         $("#article-Edit-EditorContent").html(articleData["rDescription"]);
         var converter = new Showdown.converter();
-        $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-Edit-EditorContent").html()));
+        $("#article-Edit-TabPreview").html(converter.makeHtml($("#article-Edit-EditorContent").val()));
         $('#article-Edit-EditorContent').bind('input propertychange', function () {
             var converter = new Showdown.converter();
             $("#article-Edit-TabPreview").html(converter.makeHtml($(this).val()));
