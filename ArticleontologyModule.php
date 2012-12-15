@@ -69,7 +69,12 @@ class ArticleontologyModule extends OntoWiki_Module
 
     public function getTitle()
     {
-        return 'Article';
+        $titleHelper = new OntoWiki_Model_TitleHelper();
+        $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
+        return $titleHelper->getTitle(
+            $this->_privateConfig->get('newArticleResourceType'),
+            $this->_language
+        );
     }
 
     public function shouldShow()

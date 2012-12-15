@@ -153,9 +153,16 @@ class ArticleController extends OntoWiki_Controller_Component
                 $this->view->placeholder('main.window.title')
                            ->set('Set an article for \'' . $th->getTitle($this->view->r) .'\'');
             }
-            else
+            else {
+                $titleHelper = new OntoWiki_Model_TitleHelper();
+                $titleHelper->addResource($this->_privateConfig->get('newArticleResourceType'));
+                $labelArticleResource = $titleHelper->getTitle(
+                    $this->_privateConfig->get('newArticleResourceType'),
+                    $this->_language
+                );
                 $this->view->placeholder('main.window.title')
-                           ->set('Add a new article');
+                           ->set('Add a new '. $labelArticleResource);
+            }
         }
     }
 
