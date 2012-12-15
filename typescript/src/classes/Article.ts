@@ -12,11 +12,6 @@ class Article {
      * Save content for given resource
      */
     static save (r:string, label:string, content:string, callback:any) {
-        console.log ( {
-                "r": r,
-                "label": label,
-                "content": content
-            } );
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -30,8 +25,7 @@ class Article {
             System.out ( "response text: " + xhr.responseText );
             System.out ( "error: " + thrownError );
         })
-        .done( function (entries) { 
-            console.log ( entries);
+        .done( function (entries) {
             callback (entries);
         });
     }

@@ -90,11 +90,6 @@ var Article = (function () {
     function Article() {
     }
     Article.save = function save(r, label, content, callback) {
-        console.log({
-            "r": r,
-            "label": label,
-            "content": content
-        });
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -107,7 +102,6 @@ var Article = (function () {
             System.out("response text: " + xhr.responseText);
             System.out("error: " + thrownError);
         }).done(function (entries) {
-            console.log(entries);
             callback(entries);
         });
     }
