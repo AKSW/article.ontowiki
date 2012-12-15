@@ -1,3 +1,7 @@
+/**
+ * IDs
+ */
+
 #article-Edit-TabEditor {
     width: 450px;
     min-height: 300px;
@@ -5,8 +9,8 @@
 }
 
 #article-EditorContent {
-    min-width: 450px;
-    min-height: 300px;
+    min-width: 100%;
+    min-height: 400px;
     border: 1px solid #A1A1A1;
     padding: 8px;
     font-size: 15px;
@@ -27,6 +31,31 @@
     display: none;
 }
 
+#article-Edit-SavingSuccessNotif {
+    display: none;
+    font-weight: bold;
+    color: #496B45;
+    margin-left: 30px;
+}
+
+#article-Edit-ContentArea {
+    padding-left: 5px; 
+    margin: 0px;
+}
+
+#article-label-field { 
+    padding-left:6px; 
+    padding-right:6px; 
+    padding-bottom:4px; 
+    padding-top:4px; 
+    width: 100%;
+    border: 1px solid #9A9A9A;
+}
+
+/**
+ * CLASSES
+ */
+
 .article-BBEditorButton {
     width: 12px;
     margin-left: 2px;
@@ -39,11 +68,4 @@
 .article-Button {
     width: 70px;
     cursor: pointer;
-}
-
-#article-Edit-SavingSuccessNotif {
-    display: none;
-    font-weight: bold;
-    color: #496B45;
-    margin-left: 30px;
 }
