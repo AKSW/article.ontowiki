@@ -76,7 +76,7 @@ class ArticleController extends OntoWiki_Controller_Component
 
         // get TitleHelper
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
-        
+
         // get label for newArticleResourceType
         $th = new OntoWiki_Model_TitleHelper();
         $th->addResource($this->_privateConfig->get('newArticleResourceType'));
@@ -88,7 +88,10 @@ class ArticleController extends OntoWiki_Controller_Component
         /**
          * Set module context
          */
+        // these two contexts pull a specific module into the view
         $this->addModuleContext('extension.resourcemodules.linkinghere');
+        $this->addModuleContext('extension.pubsub.subscriptions');
+        // this context provides a generic view identifier
         $this->addModuleContext('main.window.article.edit');
     }
 
@@ -110,27 +113,27 @@ class ArticleController extends OntoWiki_Controller_Component
             // stop further execution of the function
             return;
         }
-        
+
         /**
          * Add 2 buttons to the toolbar: save and cancel
          */
         $this->_addButtons($this->_owApp->toolbar);
 
         $this->_titleHelper->reset();
-        
+
         if (false == $this->_article->getResourceStatus()) {
             $this->_titleHelper->addResource($this->_article->getResourceUri());
-        }       
-        
+        }
+
         /**
          * Get a bunch of labels
          */
         $this->_titleHelper->addResource($this->_article->getResourceUri());
-        
+
         $this->view->rLabel = $this->_titleHelper->getTitle(
             $this->_article->getResourceUri(),
             $this->_language
-        );        
+        );
         $this->view->labelLabel = ucwords(
             $this->_titleHelper->getTitle(
                 'http://www.w3.org/2000/01/rdf-schema#label',
@@ -141,25 +144,24 @@ class ArticleController extends OntoWiki_Controller_Component
         // save given resource
         $this->view->r              = $this->_article->getResourceUri();
         $this->view->rDescription   = $this->_article->getDescriptionText();
-           
+
         if (false == $this->_article->getResourceStatus()) {
             $this->view->placeholder('main.window.title')
                ->set('Set an article for \'' . $this->_titleHelper->getTitle($this->view->r) .'\'');
-        }
-        else {
+        } else {
             $this->view->placeholder('main.window.title')
                ->set('Add a new '. $this->_newArticleResourceTypeLabel);
         }
-        
+
         /**
          * Include javascript files
          */
         $jsUrl = $this->view->owUrl.'extensions/article/public/javascript/';
         $this->view->headScript()->appendFile($jsUrl .'/BBEditor.js', 'text/javascript');
         $this->view->headScript()->appendFile($jsUrl .'/EditAction.js', 'text/javascript');
-        
+
         $this->view->headScript()->appendFile($jsUrl .'/libraries/showdown.js', 'text/javascript');
-        
+
         /**
          * Include css files
          */
@@ -247,11 +249,11 @@ class ArticleController extends OntoWiki_Controller_Component
             )
         );
     }
-    
+
     /**
-     * 
+     *
      */
-    protected function _addButtons(&$toolbar) 
+    protected function _addButtons(&$toolbar)
     {
         // creates toolbar and adds two button
         $toolbar->appendButton(
@@ -268,7 +270,7 @@ class ArticleController extends OntoWiki_Controller_Component
                 'id' => 'article-CancelBtn'
             )
         );
-        
+
         $this->view->placeholder('main.window.toolbar')->set($toolbar);
     }
 }
