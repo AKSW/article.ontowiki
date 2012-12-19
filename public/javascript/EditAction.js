@@ -89,14 +89,30 @@ var Article = (function () {
     }
     Article.save = function save(r, label, content, callbackOnSuccess, callbackOnError) {
         var newResourceKey = articleData["r"];
+        var oldLabel = articleData["rLabel"];
         var oldDescription = articleData["rDescription"];
         var newResourceTypeUri = articleData["insertUpdateInformation"]["newResourceTypeUri"];
         var contentPropertyUri = articleData["insertUpdateInformation"]["contentPropertyUri"];
         var contentDatatype = articleData["insertUpdateInformation"]["contentDatatype"];
+        var resourceLabelUri = articleData["insertUpdateInformation"]["resourceLabelUri"];
+        var resourceLabelDataType = articleData["insertUpdateInformation"]["resourceLabelDataType"];
+        var resourceLabelLang = articleData["insertUpdateInformation"]["resourceLabelLang"];
         var del = {
         };
         del[newResourceKey] = {
         };
+        del[newResourceKey][resourceLabelUri] = [
+            {
+            }
+        ];
+        del[newResourceKey][resourceLabelUri][0]["value"] = oldLabel;
+        del[newResourceKey][resourceLabelUri][0]["type"] = "literal";
+        if("" != resourceLabelDataType) {
+            del[newResourceKey][resourceLabelUri][0]["datatype"] = resourceLabelDataType;
+        }
+        if("" != resourceLabelLang) {
+            del[newResourceKey][resourceLabelUri][0]["lang"] = resourceLabelLang;
+        }
         del[newResourceKey][contentPropertyUri] = [
             {
             }
@@ -107,30 +123,19 @@ var Article = (function () {
         del = $.toJSON(del);
         var namedGraphUri = articleData["insertUpdateInformation"]["namedGraphUri"];
         var url = articleData["insertUpdateInformation"]["serviceUpdateURL"];
-        $.ajax({
-            url: url,
-            data: {
-                "named-graph-uri": namedGraphUri,
-                "delete": del
-            }
-        }).error(function (xhr, ajaxOptions, thrownError) {
-            System.out("Article > save > error");
-            System.out("response text: " + xhr.responseText);
-            System.out("error: " + thrownError);
-        }).done(function (entries) {
-            console.log("delete ");
-            console.log(entries);
-        });
+        Article.deleteExistingContent(url, namedGraphUri, del);
         var insert = {
         };
         insert[newResourceKey] = {
-            "http://www.w3.org/2000/01/rdf-schema#label": [
-                {
-                    "value": label,
-                    "type": "literal"
-                }
-            ]
         };
+        insert[newResourceKey][resourceLabelUri] = [
+            {
+            }
+        ];
+        insert[newResourceKey][resourceLabelUri][0]["value"] = label;
+        insert[newResourceKey][resourceLabelUri][0]["type"] = "literal";
+        insert[newResourceKey][resourceLabelUri][0]["datatype"] = resourceLabelDataType;
+        insert[newResourceKey][resourceLabelUri][0]["lang"] = resourceLabelLang;
         insert[newResourceKey][newResourceTypeUri] = [
             {
             }
@@ -157,9 +162,24 @@ var Article = (function () {
             System.out("Article > save > error");
             System.out("response text: " + xhr.responseText);
             System.out("error: " + thrownError);
-            callbackOnError(xhr.responseText);
         }).done(function (entries) {
             callbackOnSuccess(entries);
+        });
+        articleData["rLabel"] = label;
+        articleData["rDescription"] = content;
+    }
+    Article.deleteExistingContent = function deleteExistingContent(url, namedGraphUri, delObj) {
+        $.ajax({
+            url: url,
+            data: {
+                "named-graph-uri": namedGraphUri,
+                "delete": delObj
+            }
+        }).error(function (xhr, ajaxOptions, thrownError) {
+            System.out("Article > save > error");
+            System.out("response text: " + xhr.responseText);
+            System.out("error: " + thrownError);
+        }).done(function (entries) {
         });
     }
     return Article;

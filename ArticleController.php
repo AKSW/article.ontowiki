@@ -126,9 +126,22 @@ class ArticleController extends OntoWiki_Controller_Component
 
         $this->_titleHelper->reset();
 
-        if (false == $this->_article->getResourceStatus()) {
+        /*if (false == $this->_article->getResourceStatus()) {
             $this->_titleHelper->addResource($this->_article->getResourceUri());
-        }
+        }*/
+        
+        $resource = new OntoWiki_Model_Resource (
+           $this->_owApp->selectedModel->getStore(),
+           $this->_owApp->selectedModel,
+           $this->_r
+        );
+        
+        $resource = $resource->getValues();
+                
+        $resourceLabel = $this->_privateConfig->get('newArticleResourceLabelType');
+        $this->view->resourceLabelUri = $this->_privateConfig->get('newArticleResourceLabelType');
+        $this->view->resourceLabelDataType = $resource [$this->_owApp->selectedModel->getModelIri()][$resourceLabel][0]['datatype'];
+        $this->view->resourceLabelLang = $resource [$this->_owApp->selectedModel->getModelIri()][$resourceLabel][0]['lang'];
 
         /**
          * Get a bunch of labels
@@ -152,7 +165,7 @@ class ArticleController extends OntoWiki_Controller_Component
 
         if (false == $this->_article->getResourceStatus()) {
             $this->view->placeholder('main.window.title')
-               ->set('Set an article for \'' . $this->_titleHelper->getTitle($this->view->r) .'\'');
+               ->set('Set an article for \'' . $this->_titleHelper->getTitle($this->_r->getUri()) .'\'');
         } else {
             $this->view->placeholder('main.window.title')
                ->set('Add a new '. $this->_newArticleResourceTypeLabel);

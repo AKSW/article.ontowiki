@@ -1,16 +1,20 @@
 <script type="text/javascript">
     var articleData = {
         "r": "<?php echo $this->r; ?>",
+        "rLabel": <?php echo json_encode ($this->rLabel); ?>,
         "rDescription": <?php echo json_encode ($this->rDescription); ?>,
         "articleUrl": "<?php echo $this->articleUrl; ?>",
         "imagesPath": "<?php echo $this->articleImagesUrl; ?>",
         "insertUpdateInformation": {
-            "newResourceTypeUri" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            "newResourceClassUri" : "<?php echo $this->newResourceClassUri; ?>",
-            "namedGraphUri" : "<?php echo $this->namedGraphUri; ?>",
-            "serviceUpdateURL" : "<?php echo $this->owUrl.'service/update/'; ?>",
-            "contentPropertyUri" : "<?php echo $this->contentPropertyUri; ?>",
-            "contentDatatype" : "<?php echo $this->contentDatatype; ?>"
+            "newResourceTypeUri" :      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "newResourceClassUri" :     "<?php echo $this->newResourceClassUri; ?>",
+            "namedGraphUri" :           "<?php echo $this->namedGraphUri; ?>",
+            "serviceUpdateURL" :        "<?php echo $this->owUrl.'service/update/'; ?>",
+            "contentPropertyUri" :      "<?php echo $this->contentPropertyUri; ?>",
+            "contentDatatype" :         "<?php echo $this->contentDatatype; ?>",
+            "resourceLabelUri":         "<?php echo $this->resourceLabelUri; ?>",
+            "resourceLabelDataType":    "<?php echo $this->resourceLabelDataType; ?>",
+            "resourceLabelLang":        "<?php echo $this->resourceLabelLang; ?>"
         },
         "BBEditor": {
             "textareaId": "article-Edit-EditorContent", 

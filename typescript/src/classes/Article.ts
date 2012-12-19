@@ -13,14 +13,30 @@ class Article {
      */
     static save (r:string, label:string, content:string, callbackOnSuccess:any, callbackOnError:any) {
         var newResourceKey = articleData["r"];
+        var oldLabel = articleData["rLabel"];
         var oldDescription = articleData["rDescription"];
         var newResourceTypeUri = articleData["insertUpdateInformation"]["newResourceTypeUri"];
         var contentPropertyUri = articleData["insertUpdateInformation"]["contentPropertyUri"];
         var contentDatatype = articleData["insertUpdateInformation"]["contentDatatype"];
+        var resourceLabelUri = articleData["insertUpdateInformation"]["resourceLabelUri"];
+        var resourceLabelDataType = articleData["insertUpdateInformation"]["resourceLabelDataType"];
+        var resourceLabelLang = articleData["insertUpdateInformation"]["resourceLabelLang"];
         
         var del = {};
         del [newResourceKey] = {};
         
+        // label
+        del[newResourceKey][resourceLabelUri] = [{}];
+        
+        del[newResourceKey][resourceLabelUri][0]["value"] = oldLabel;
+        del[newResourceKey][resourceLabelUri][0]["type"] = "literal";
+        
+        if("" != resourceLabelDataType)
+            del[newResourceKey][resourceLabelUri][0]["datatype"] = resourceLabelDataType;
+        if("" != resourceLabelLang)
+            del[newResourceKey][resourceLabelUri][0]["lang"] = resourceLabelLang;
+        
+        // content
         del[newResourceKey][contentPropertyUri] = [{}];
         
         del[newResourceKey][contentPropertyUri][0]["value"] = oldDescription;
@@ -34,39 +50,25 @@ class Article {
         /**
          * DELETE
          */
-        $.ajax({
-            url: url,
-            data: {
-                "named-graph-uri": namedGraphUri,
-                "delete": del
-            }
-          }
-        )
-        .error( function (xhr, ajaxOptions, thrownError) {
-            System.out ( "Article > save > error" );
-            System.out ( "response text: " + xhr.responseText );
-            System.out ( "error: " + thrownError );
-            // callbackOnError(xhr.responseText);
-        })
-        .done( function (entries) {
-            console.log ("delete ");
-            console.log (entries);
-            // callbackOnSuccess (entries);
-        });
-
+        Article.deleteExistingContent (url, namedGraphUri, del);
 
 
         /**
          * INSERT
          */        
+
+        // Label
         var insert = {};
-        insert [newResourceKey] = {
-            "http://www.w3.org/2000/01/rdf-schema#label": [{
-                "value": label,
-                "type": "literal"
-            }]
-        };
+        insert[newResourceKey] = {};
         
+        insert[newResourceKey][resourceLabelUri] = [{}];
+        
+        insert[newResourceKey][resourceLabelUri][0]["value"] = label;
+        insert[newResourceKey][resourceLabelUri][0]["type"] = "literal";        
+        insert[newResourceKey][resourceLabelUri][0]["datatype"] = resourceLabelDataType;
+        insert[newResourceKey][resourceLabelUri][0]["lang"] = resourceLabelLang;
+        
+        // Type
         insert[newResourceKey][newResourceTypeUri] = [{}];
         
         insert[newResourceKey][newResourceTypeUri][0]["value"] =
@@ -74,6 +76,7 @@ class Article {
         insert[newResourceKey][newResourceTypeUri][0]["type"] = "uri";
         
         
+        // Content
         insert[newResourceKey][contentPropertyUri] = [{}];
         
         insert[newResourceKey][contentPropertyUri][0]["value"] = content;
@@ -96,10 +99,34 @@ class Article {
             System.out ( "Article > save > error" );
             System.out ( "response text: " + xhr.responseText );
             System.out ( "error: " + thrownError );
-            callbackOnError(xhr.responseText);
         })
         .done( function (entries) {
             callbackOnSuccess (entries);
+        });
+        
+        // save new old data
+        articleData ["rLabel"] = label;
+        articleData ["rDescription"] = content;
+    }
+    
+    /**
+     * 
+     */
+    static deleteExistingContent (url:string, namedGraphUri, delObj) {
+        $.ajax({
+            url: url,
+            data: {
+                "named-graph-uri": namedGraphUri,
+                "delete": delObj
+            }
+          }
+        )
+        .error( function (xhr, ajaxOptions, thrownError) {
+            System.out ( "Article > save > error" );
+            System.out ( "response text: " + xhr.responseText );
+            System.out ( "error: " + thrownError );
+        })
+        .done( function (entries) {
         });
     }
 }
