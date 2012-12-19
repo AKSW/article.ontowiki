@@ -71,8 +71,6 @@ var System = (function () {
         $.ajaxSetup({
             "async": true,
             "cache": false,
-            "crossDomain": true,
-            "dataType": "json",
             "type": "POST"
         });
         $.support.cors = true;

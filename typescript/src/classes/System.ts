@@ -104,8 +104,6 @@ class System {
         $.ajaxSetup({
             "async": true,
             "cache": false,
-            "crossDomain": true,
-            "dataType": "json",
             "type": "POST"
         });
         

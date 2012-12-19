@@ -113,7 +113,11 @@ class ArticleController extends OntoWiki_Controller_Component
             // stop further execution of the function
             return;
         }
-
+        $this->view->newResourceClassUri = $this->_privateConfig->get('newArticleResourceType');
+        $this->view->namedGraphUri = $this->_owApp->selectedModel->getModelUri();
+        $this->view->contentPropertyUri = $this->_contentProperty;
+        $this->view->contentDatatype = $this->_contentDatatype;
+        
         /**
          * Add 2 buttons to the toolbar: save and cancel
          */
@@ -209,43 +213,6 @@ class ArticleController extends OntoWiki_Controller_Component
                 'list'            => 'instances',
                 'm'               => urlencode($this->_owApp->selectedModel),
                 'instancesconfig' => urlencode(json_encode($instancesconfig))
-            )
-        );
-    }
-
-    /**
-     *
-     */
-    public function savearticleAction()
-    {
-        // Disable layout
-        $this->_helper->viewRenderer->setNoRender();
-        $this->_helper->layout->disableLayout();
-
-        $this->_article->setLabel($this->_request->getParam('label'));
-        $content = $this->_request->getParam('content');
-
-        // Given resource has no article
-        if ( false == $this->_article->exists() ) {
-
-            // create article with given $content
-            $this->_article->create($content);
-
-            $status = 'ok';
-            $message = 'Article created';
-        } else {
-            // Given resource has already an article
-            $this->_article->remove();
-            $this->_article->create($content);
-
-            $status = 'ok';
-            $message = 'Article updated';
-        }
-
-        // check if given resources already has an associated article
-        echo json_encode(
-            array(
-                'status' => $status, 'message' => $message
             )
         );
     }
