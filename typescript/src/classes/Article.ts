@@ -53,9 +53,10 @@ class Article {
             System.out ( "Article > save > error" );
             System.out ( "response text: " + xhr.responseText );
             System.out ( "error: " + thrownError );
+            callbackOnError(xhr.responseText);
         })
         .done( function (entries) {
-            callback (entries);
+            callbackOnSuccess (entries);
         });
     }
 }

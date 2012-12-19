@@ -31,6 +31,16 @@
 </script>
 
 <div id="article-Edit-ContentArea">  
+
+    <div style="height:40px;">
+        <!-- Notification to show if saving was successfully -->
+        <p class="messagebox success" id="article-Edit-SavingSuccessNotif" style="display: none;">
+            Article saved</p>
+        
+        <!-- Notification to show if saving was not possible -->
+        <p class="messagebox error" id="article-Edit-SavingNotPossibleNotif" style="display: none;">
+            Saving not possible: </p>
+    </div>
   
     <div style="width: 80%">
         <span style="font-weight:bold;"><?php echo $this->labelLabel; ?></span>
