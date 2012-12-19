@@ -11,7 +11,7 @@ class Article {
     /**
      * Save content for given resource
      */
-    static save (r:string, label:string, content:string, callback:any) {
+    static save(r:string, label:string, content:string, callbackOnSuccess:any, callbackOnError:any) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -24,9 +24,10 @@ class Article {
             System.out ( "Article > save > error" );
             System.out ( "response text: " + xhr.responseText );
             System.out ( "error: " + thrownError );
+            callbackOnError(xhr.responseText);
         })
         .done( function (entries) {
-            callback (entries);
+            callbackOnSuccess (entries);
         });
     }
 }

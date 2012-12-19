@@ -89,7 +89,7 @@ var System = (function () {
 var Article = (function () {
     function Article() {
     }
-    Article.save = function save(r, label, content, callback) {
+    Article.save = function save(r, label, content, callbackOnSuccess, callbackOnError) {
         $.ajax({
             url: articleData["articleUrl"] + "savearticle/",
             data: {
@@ -101,8 +101,9 @@ var Article = (function () {
             System.out("Article > save > error");
             System.out("response text: " + xhr.responseText);
             System.out("error: " + thrownError);
+            callbackOnError(xhr.responseText);
         }).done(function (entries) {
-            callback(entries);
+            callbackOnSuccess(entries);
         });
     }
     return Article;
@@ -131,10 +132,13 @@ var EditAction_Event = (function () {
         });
     }
     EditAction_Event.onClick_SaveBtn = function onClick_SaveBtn() {
-        Article.save(articleData["r"], $("#article-Edit-LabelField").val(), $("#article-Edit-EditorContent").val(), EditAction_Event.onComplete_SaveArticle);
+        Article.save(articleData["r"], $("#article-Edit-LabelField").val(), $("#article-Edit-EditorContent").val(), EditAction_Event.onComplete_SavingArticleSuccessfully, EditAction_Event.onComplete_SavingArticleNotPossible);
     }
-    EditAction_Event.onComplete_SaveArticle = function onComplete_SaveArticle(entries) {
+    EditAction_Event.onComplete_SavingArticleSuccessfully = function onComplete_SavingArticleSuccessfully(entries) {
         $("#article-Edit-SavingSuccessNotif").fadeIn(300).delay(1000).fadeOut(500);
+    }
+    EditAction_Event.onComplete_SavingArticleNotPossible = function onComplete_SavingArticleNotPossible(errorMessage) {
+        $("#article-Edit-SavingNotPossibleNotif").append(" " + errorMessage).fadeIn(500);
     }
     return EditAction_Event;
 })();

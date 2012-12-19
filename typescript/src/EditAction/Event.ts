@@ -63,17 +63,27 @@ class EditAction_Event {
             articleData ["r"],
             $("#article-Edit-LabelField").val(),
             $("#article-Edit-EditorContent").val(),
-            EditAction_Event.onComplete_SaveArticle
+            EditAction_Event.onComplete_SavingArticleSuccessfully,
+            EditAction_Event.onComplete_SavingArticleNotPossible
         );
     }
     
     /**
      * 
      */
-    static onComplete_SaveArticle (entries:string) : void {
+    static onComplete_SavingArticleSuccessfully (entries:string) : void {
         $("#article-Edit-SavingSuccessNotif")
             .fadeIn ( 300 )
             .delay ( 1000 )
             .fadeOut ( 500 );
+    }
+    
+    /**
+     * 
+     */
+    static onComplete_SavingArticleNotPossible (errorMessage) : void {
+        $("#article-Edit-SavingNotPossibleNotif")
+            .append (" " + errorMessage)
+            .fadeIn ( 500 );
     }
 }
