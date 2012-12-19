@@ -87,11 +87,40 @@ var System = (function () {
 var Article = (function () {
     function Article() {
     }
-    Article.save = function save(r, label, content, callback) {
-        var newResourceKey = articleData["insertUpdateInformation"]["namedGraphUri"] + "NewResource/" + articleData["insertUpdateInformation"]["md5Hash"];
+    Article.save = function save(r, label, content, callbackOnSuccess, callbackOnError) {
+        var newResourceKey = articleData["r"];
+        var oldDescription = articleData["rDescription"];
         var newResourceTypeUri = articleData["insertUpdateInformation"]["newResourceTypeUri"];
         var contentPropertyUri = articleData["insertUpdateInformation"]["contentPropertyUri"];
         var contentDatatype = articleData["insertUpdateInformation"]["contentDatatype"];
+        var del = {
+        };
+        del[newResourceKey] = {
+        };
+        del[newResourceKey][contentPropertyUri] = [
+            {
+            }
+        ];
+        del[newResourceKey][contentPropertyUri][0]["value"] = oldDescription;
+        del[newResourceKey][contentPropertyUri][0]["type"] = "literal";
+        del[newResourceKey][contentPropertyUri][0]["datatype"] = contentDatatype;
+        del = $.toJSON(del);
+        var namedGraphUri = articleData["insertUpdateInformation"]["namedGraphUri"];
+        var url = articleData["insertUpdateInformation"]["serviceUpdateURL"];
+        $.ajax({
+            url: url,
+            data: {
+                "named-graph-uri": namedGraphUri,
+                "delete": del
+            }
+        }).error(function (xhr, ajaxOptions, thrownError) {
+            System.out("Article > save > error");
+            System.out("response text: " + xhr.responseText);
+            System.out("error: " + thrownError);
+        }).done(function (entries) {
+            console.log("delete ");
+            console.log(entries);
+        });
         var insert = {
         };
         insert[newResourceKey] = {

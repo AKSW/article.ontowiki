@@ -39,12 +39,13 @@ class ArticleController extends OntoWiki_Controller_Component
         // get contentDatatype from config
         $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
 
-        if ("" == $this->getParam('createnew')) {
+        if ('' == $this->getParam('createnew')) {
             // init necessary stuff
             $this->_r = $this->_owApp->selectedResource;
             $this->_rInstance = new Erfurt_Rdf_Resource($this->_r, $this->_owApp->selectedModel);
         } else {
-            $this->_r = "";
+            $this->_r = $this->_owApp->selectedModel->getModelIri() 
+                .'NewResource/'. strtoupper(md5(rand(0, 1000)*time()));
             $this->_rInstance = null;
         }
 
@@ -146,7 +147,7 @@ class ArticleController extends OntoWiki_Controller_Component
         );
 
         // save given resource
-        $this->view->r              = $this->_article->getResourceUri();
+        $this->view->r              = $this->_r;
         $this->view->rDescription   = $this->_article->getDescriptionText();
 
         if (false == $this->_article->getResourceStatus()) {
