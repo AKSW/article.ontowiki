@@ -25,7 +25,7 @@ class BBEditor_Event {
         BBEditor_Main.initializeBBEditor (
             articleData ["BBEditor"]["textareaId"],
             articleData ["BBEditor"]["toolbarId"],
-            articleData ["imagesPath"],
+            articleData ["articleImagesUrl"],
             articleData ["BBEditor"]["toolbarEntries"]
         );
     }

@@ -41,7 +41,7 @@ class ArticleController extends OntoWiki_Controller_Component
 
         if ('' == $this->getParam('createnew')) {
             // init necessary stuff
-            $this->_r = $this->_owApp->selectedResource;
+            $this->_r = $this->_owApp->selectedResource->getUri();
             $this->_rInstance = new Erfurt_Rdf_Resource($this->_r, $this->_owApp->selectedModel);
         } else {
             // Generate a special uri for the new resource
@@ -128,39 +128,82 @@ class ArticleController extends OntoWiki_Controller_Component
             $resource = new OntoWiki_Model_Resource($model->getStore(), $model, $this->_r);
             
             $resource = $resource->getValues();
-                    
-            $this->view->resourceLabelUri       = $this->_privateConfig->get('newArticleResourceLabelType');
-            $this->view->resourceLabelDataType  = $resource[$modelIri][$newArticleResourceLabelType][0]['datatype'];
-            $this->view->resourceLabelLang      = $resource[$modelIri][$newArticleResourceLabelType][0]['lang'];
+            $resource = $resource[$modelIri];            
             
-            $this->view->newResourceClassUri    = $this->_privateConfig->get('newArticleResourceType');
-            $this->view->namedGraphUri          = $this->_owApp->selectedModel->getModelUri();
-            $this->view->contentPropertyUri     = $this->_contentProperty;
-            $this->view->contentDatatype        = $this->_contentDatatype;
-            
-            $this->view->rLabel                 = $resource[$modelIri][$this->view->resourceLabelUri][0]['content'];
-            
-            // save given resource
-            $this->view->r              = $this->_r;
-            $this->view->rDescription   = $resource[$modelIri][$this->_privateConfig->get('contentProperty')][0]['content'];
+            $articleData = array (
+                'r'                         => $this->_r,
+                'rLabel'                    => $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'],
+                'rDescription'              => $resource[$this->_privateConfig->get('contentProperty')][0]['content'],
+                'articleUrl'                => $this->view->articleUrl,
+                'articleImagesUrl'          => $this->view->articleImagesUrl,
+                'insertUpdateInformation'   => array(
+                    'newResourceTypeUri'    => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                    'newResourceClassUri'   => $this->_privateConfig->get('newArticleResourceType'),
+                    'namedGraphUri'         => $modelIri,
+                    'serviceUpdateURL'      => $this->view->owUrl . 'service/update/',
+                    'contentPropertyUri'    => $this->_contentProperty,
+                    'contentDatatype'       => $this->_contentDatatype,
+                    'resourceLabelUri'      => $this->_privateConfig->get('newArticleResourceLabelType'),
+                    'resourceLabelDataType' => $resource[$newArticleResourceLabelType][0]['datatype'],
+                    'resourceLabelLang'     => $resource[$newArticleResourceLabelType][0]['lang'],
+                )
+            );            
             
             // site window title
             $this->view->placeholder('main.window.title')
-               ->set('Add a new '. $this->_newArticleResourceTypeLabel);
+               ->set('Set an article for \'' . $this->view->rLabel .'\'');
+        
         
         /**
          * if resource does NOT exists yet.
          */
         } else {
-            // save given resource
-            $this->view->r              = $this->_r;
-            $this->view->rLabel         = '';
-            $this->view->rDescription   = '';
+            $articleData = array (
+                'r'                         => $this->_r,
+                'rLabel'                    => '',
+                'rDescription'              => '',
+                'articleUrl'                => $this->view->articleUrl,
+                'articleImagesUrl'          => $this->view->articleImagesUrl,
+                'insertUpdateInformation'   => array(
+                    'newResourceTypeUri'    => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                    'newResourceClassUri'   => $this->_privateConfig->get('newArticleResourceType'),
+                    'namedGraphUri'         => $modelIri,
+                    'serviceUpdateURL'      => $this->view->owUrl . 'service/update/',
+                    'contentPropertyUri'    => $this->_contentProperty,
+                    'contentDatatype'       => $this->_contentDatatype,
+                    'resourceLabelUri'      => $this->_privateConfig->get('newArticleResourceLabelType'),
+                    'resourceLabelDataType' => '',
+                    'resourceLabelLang'     => '',
+                )
+            );               
             
             // site window title
             $this->view->placeholder('main.window.title')
-               ->set('Set an article for \'' . $this->view->rLabel .'\'');
+               ->set('Add a new '. $this->_newArticleResourceTypeLabel);
         }
+        
+        /**
+         * Configuration for our bbeditor
+         */
+        $bbEditorConfiguration = array(
+            'textareaId'    => 'article-Edit-EditorContent', 
+            'toolbarId'     => 'article-Edit-Toolbar',
+            
+            // List of element which will be shown in the toolbar in the given order
+            'toolbarEntries' => array(
+                array('image' => 'boldB.png', 'name' => 'boldBtn', 'title' => 'Bold', 'type' => 'bold'),
+                array('image' => 'italicI.png', 'name' => 'italicBtn', 'title' => 'Italic', 'type' => 'italic'),
+                array('image' => 'codeLine.png', 'name' => 'codeLineBtn', 'title' => 'Code line', 'type' => 'codeLine'),
+                array('image' => 'codeBlock.png', 'name' => 'codeBlockBtn', 'title' => 'Code block', 'type' => 'codeBlock'),
+                array('image' => 'list.png', 'name' => 'listBtn', 'title' => 'Unordered list', 'type' => 'list'),
+                array('image' => 'quote.png', 'name' => 'quoteBtn', 'title' => 'Quoting text', 'type' => 'quote')
+            )
+        );
+        
+        $articleData ['BBEditor'] = $bbEditorConfiguration;
+        
+        $this->view->articleData = $articleData;
+        
 
         /**
          * Get a bunch of labels

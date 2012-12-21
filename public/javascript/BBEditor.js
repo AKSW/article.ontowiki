@@ -238,7 +238,7 @@ $(document).ready(function () {
 var BBEditor_Event = (function () {
     function BBEditor_Event() { }
     BBEditor_Event.ready = function ready() {
-        BBEditor_Main.initializeBBEditor(articleData["BBEditor"]["textareaId"], articleData["BBEditor"]["toolbarId"], articleData["imagesPath"], articleData["BBEditor"]["toolbarEntries"]);
+        BBEditor_Main.initializeBBEditor(articleData["BBEditor"]["textareaId"], articleData["BBEditor"]["toolbarId"], articleData["articleImagesUrl"], articleData["BBEditor"]["toolbarEntries"]);
     }
     return BBEditor_Event;
 })();
