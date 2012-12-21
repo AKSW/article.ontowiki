@@ -128,11 +128,13 @@ class ArticleController extends OntoWiki_Controller_Component
             $resource = new OntoWiki_Model_Resource($model->getStore(), $model, $this->_r);
             
             $resource = $resource->getValues();
-            $resource = $resource[$modelIri];            
+            $resource = $resource[$modelIri];      
+            
+            $rLabel = $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'];      
             
             $articleData = array (
                 'r'                         => $this->_r,
-                'rLabel'                    => $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'],
+                'rLabel'                    => $rLabel,
                 'rDescription'              => $resource[$this->_privateConfig->get('contentProperty')][0]['content'],
                 'articleUrl'                => $this->view->articleUrl,
                 'articleImagesUrl'          => $this->view->articleImagesUrl,
@@ -151,7 +153,7 @@ class ArticleController extends OntoWiki_Controller_Component
             
             // site window title
             $this->view->placeholder('main.window.title')
-               ->set('Set an article for \'' . $this->view->rLabel .'\'');
+               ->set('Set an article for \'' . $rLabel .'\'');
         
         
         /**
