@@ -44,6 +44,10 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->_r = $this->_owApp->selectedResource;
             $this->_rInstance = new Erfurt_Rdf_Resource($this->_r, $this->_owApp->selectedModel);
         } else {
+            // Generate a special uri for the new resource
+            // This uri contains "NewResource/" and because of that the 
+            // plugin "resourcecreationuri" will recognize this and replace
+            // the uri with a "beautiful" one.
             $this->_r = $this->_owApp->selectedModel->getModelIri() 
                 .'NewResource/'. strtoupper(md5(rand(0, 1000)*time()));
             $this->_rInstance = null;
@@ -51,24 +55,7 @@ class ArticleController extends OntoWiki_Controller_Component
 
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
-
-        $this->_article = new Article_Article(
-            // current selected model instance
-            $this->_owApp->selectedModel,
-            // predicate URI between resource and article
-            $this->_contentProperty,
-            // content datatype
-            $this->_contentDatatype,
-            // article resource type
-            $this->_privateConfig->get('newArticleResourceType'),
-            // article resource label type
-            $this->_privateConfig->get('newArticleResourceLabelType'),
-            // language
-            $this->_language,
-            // Resource for article
-            $this->_rInstance
-        );
-
+        
         // set URLs
         $owUrl                              = $this->_config->staticUrlBase;
         $this->view->owUrl                  = $owUrl;
@@ -114,10 +101,18 @@ class ArticleController extends OntoWiki_Controller_Component
             // stop further execution of the function
             return;
         }
-        $this->view->newResourceClassUri = $this->_privateConfig->get('newArticleResourceType');
-        $this->view->namedGraphUri = $this->_owApp->selectedModel->getModelUri();
-        $this->view->contentPropertyUri = $this->_contentProperty;
-        $this->view->contentDatatype = $this->_contentDatatype;
+        
+        /**
+         * Model
+         */
+        $model = $this->_owApp->selectedModel;
+        $modelIri = $this->_owApp->selectedModel->getModelIri();
+        
+        // article resource type
+        $newArticleResourceType = $this->_privateConfig->get('newArticleResourceType');
+        
+        // article resource label type
+        $newArticleResourceLabelType = $this->_privateConfig->get('newArticleResourceLabelType');
         
         /**
          * Add 2 buttons to the toolbar: save and cancel
@@ -126,32 +121,51 @@ class ArticleController extends OntoWiki_Controller_Component
 
         $this->_titleHelper->reset();
 
-        /*if (false == $this->_article->getResourceStatus()) {
-            $this->_titleHelper->addResource($this->_article->getResourceUri());
-        }*/
+        /**
+         * if resource EXISTS already
+         */
+        if(null != $this->_rInstance) {
+            $resource = new OntoWiki_Model_Resource($model->getStore(), $model, $this->_r);
+            
+            $resource = $resource->getValues();
+                    
+            $this->view->resourceLabelUri       = $this->_privateConfig->get('newArticleResourceLabelType');
+            $this->view->resourceLabelDataType  = $resource[$modelIri][$newArticleResourceLabelType][0]['datatype'];
+            $this->view->resourceLabelLang      = $resource[$modelIri][$newArticleResourceLabelType][0]['lang'];
+            
+            $this->view->newResourceClassUri    = $this->_privateConfig->get('newArticleResourceType');
+            $this->view->namedGraphUri          = $this->_owApp->selectedModel->getModelUri();
+            $this->view->contentPropertyUri     = $this->_contentProperty;
+            $this->view->contentDatatype        = $this->_contentDatatype;
+            
+            $this->view->rLabel                 = $resource[$modelIri][$this->view->resourceLabelUri][0]['content'];
+            
+            // save given resource
+            $this->view->r              = $this->_r;
+            $this->view->rDescription   = $resource[$modelIri][$this->_privateConfig->get('contentProperty')][0]['content'];
+            
+            // site window title
+            $this->view->placeholder('main.window.title')
+               ->set('Add a new '. $this->_newArticleResourceTypeLabel);
         
-        $resource = new OntoWiki_Model_Resource (
-           $this->_owApp->selectedModel->getStore(),
-           $this->_owApp->selectedModel,
-           $this->_r
-        );
-        
-        $resource = $resource->getValues();
-                
-        $resourceLabel = $this->_privateConfig->get('newArticleResourceLabelType');
-        $this->view->resourceLabelUri = $this->_privateConfig->get('newArticleResourceLabelType');
-        $this->view->resourceLabelDataType = $resource [$this->_owApp->selectedModel->getModelIri()][$resourceLabel][0]['datatype'];
-        $this->view->resourceLabelLang = $resource [$this->_owApp->selectedModel->getModelIri()][$resourceLabel][0]['lang'];
+        /**
+         * if resource does NOT exists yet.
+         */
+        } else {
+            // save given resource
+            $this->view->r              = $this->_r;
+            $this->view->rLabel         = '';
+            $this->view->rDescription   = '';
+            
+            // site window title
+            $this->view->placeholder('main.window.title')
+               ->set('Set an article for \'' . $this->view->rLabel .'\'');
+        }
 
         /**
          * Get a bunch of labels
          */
-        $this->_titleHelper->addResource($this->_article->getResourceUri());
-
-        $this->view->rLabel = $this->_titleHelper->getTitle(
-            $this->_article->getResourceUri(),
-            $this->_language
-        );
+        
         $this->view->labelLabel = ucwords(
             $this->_titleHelper->getTitle(
                 'http://www.w3.org/2000/01/rdf-schema#label',
@@ -159,25 +173,12 @@ class ArticleController extends OntoWiki_Controller_Component
             )
         );
 
-        // save given resource
-        $this->view->r              = $this->_r;
-        $this->view->rDescription   = $this->_article->getDescriptionText();
-
-        if (false == $this->_article->getResourceStatus()) {
-            $this->view->placeholder('main.window.title')
-               ->set('Set an article for \'' . $this->_titleHelper->getTitle($this->_r->getUri()) .'\'');
-        } else {
-            $this->view->placeholder('main.window.title')
-               ->set('Add a new '. $this->_newArticleResourceTypeLabel);
-        }
-
         /**
          * Include javascript files
          */
         $jsUrl = $this->view->owUrl.'extensions/article/public/javascript/';
         $this->view->headScript()->appendFile($jsUrl .'/BBEditor.js', 'text/javascript');
         $this->view->headScript()->appendFile($jsUrl .'/EditAction.js', 'text/javascript');
-
         $this->view->headScript()->appendFile($jsUrl .'/libraries/showdown.js', 'text/javascript');
 
         /**
