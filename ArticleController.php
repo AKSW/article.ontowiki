@@ -2,7 +2,7 @@
 /**
  * This file is part of the {@link http://ontowiki.net OntoWiki} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @copyright Copyright (c) 2013, {@link http://aksw.org AKSW}
  * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
@@ -45,17 +45,17 @@ class ArticleController extends OntoWiki_Controller_Component
             $this->_rInstance = new Erfurt_Rdf_Resource($this->_r, $this->_owApp->selectedModel);
         } else {
             // Generate a special uri for the new resource
-            // This uri contains "NewResource/" and because of that the 
+            // This uri contains "NewResource/" and because of that the
             // plugin "resourcecreationuri" will recognize this and replace
             // the uri with a "beautiful" one.
-            $this->_r = $this->_owApp->selectedModel->getModelIri() 
+            $this->_r = $this->_owApp->selectedModel->getModelIri()
                 .'NewResource/'. strtoupper(md5(rand(0, 1000)*time()));
             $this->_rInstance = null;
         }
 
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
-        
+
         // set URLs
         $owUrl                              = $this->_config->staticUrlBase;
         $this->view->owUrl                  = $owUrl;
@@ -101,19 +101,19 @@ class ArticleController extends OntoWiki_Controller_Component
             // stop further execution of the function
             return;
         }
-        
+
         /**
          * Model
          */
         $model = $this->_owApp->selectedModel;
         $modelIri = $this->_owApp->selectedModel->getModelIri();
-        
+
         // article resource type
         $newArticleResourceType = $this->_privateConfig->get('newArticleResourceType');
-        
+
         // article resource label type
         $newArticleResourceLabelType = $this->_privateConfig->get('newArticleResourceLabelType');
-        
+
         /**
          * Add 2 buttons to the toolbar: save and cancel
          */
@@ -124,14 +124,14 @@ class ArticleController extends OntoWiki_Controller_Component
         /**
          * if resource EXISTS already
          */
-        if(null != $this->_rInstance) {
+        if (null != $this->_rInstance) {
             $resource = new OntoWiki_Model_Resource($model->getStore(), $model, $this->_r);
-            
+
             $resource = $resource->getValues();
-            $resource = $resource[$modelIri];      
-            
-            $rLabel = $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'];      
-            
+            $resource = $resource[$modelIri];
+
+            $rLabel = $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'];
+
             $articleData = array (
                 'r'                         => $this->_r,
                 'rLabel'                    => $rLabel,
@@ -149,13 +149,12 @@ class ArticleController extends OntoWiki_Controller_Component
                     'resourceLabelDataType' => $resource[$newArticleResourceLabelType][0]['datatype'],
                     'resourceLabelLang'     => $resource[$newArticleResourceLabelType][0]['lang'],
                 )
-            );            
-            
+            );
+
             // site window title
             $this->view->placeholder('main.window.title')
                ->set('Set an article for \'' . $rLabel .'\'');
-        
-        
+
         /**
          * if resource does NOT exists yet.
          */
@@ -177,40 +176,69 @@ class ArticleController extends OntoWiki_Controller_Component
                     'resourceLabelDataType' => '',
                     'resourceLabelLang'     => '',
                 )
-            );               
-            
+            );
+
             // site window title
             $this->view->placeholder('main.window.title')
                ->set('Add a new '. $this->_newArticleResourceTypeLabel);
         }
-        
+
         /**
          * Configuration for our bbeditor
          */
         $bbEditorConfiguration = array(
-            'textareaId'    => 'article-Edit-EditorContent', 
+            'textareaId'    => 'article-Edit-EditorContent',
             'toolbarId'     => 'article-Edit-Toolbar',
-            
+
             // List of element which will be shown in the toolbar in the given order
             'toolbarEntries' => array(
-                array('image' => 'boldB.png', 'name' => 'boldBtn', 'title' => 'Bold', 'type' => 'bold'),
-                array('image' => 'italicI.png', 'name' => 'italicBtn', 'title' => 'Italic', 'type' => 'italic'),
-                array('image' => 'codeLine.png', 'name' => 'codeLineBtn', 'title' => 'Code line', 'type' => 'codeLine'),
-                array('image' => 'codeBlock.png', 'name' => 'codeBlockBtn', 'title' => 'Code block', 'type' => 'codeBlock'),
-                array('image' => 'list.png', 'name' => 'listBtn', 'title' => 'Unordered list', 'type' => 'list'),
-                array('image' => 'quote.png', 'name' => 'quoteBtn', 'title' => 'Quoting text', 'type' => 'quote')
+                array(
+                    'image' => 'boldB.png',
+                    'name' => 'boldBtn',
+                    'title' => 'Bold',
+                    'type' => 'bold'
+                ),
+                array(
+                    'image' => 'italicI.png',
+                    'name' => 'italicBtn',
+                    'title' => 'Italic',
+                    'type' => 'italic'
+                ),
+                array(
+                    'image' => 'codeLine.png',
+                    'name' => 'codeLineBtn',
+                    'title' => 'Code line',
+                    'type' => 'codeLine'
+                ),
+                array(
+                    'image' => 'codeBlock.png',
+                    'name' => 'codeBlockBtn',
+                    'title' => 'Code block',
+                    'type' => 'codeBlock'
+                ),
+                array(
+                    'image' => 'list.png',
+                    'name' => 'listBtn',
+                    'title' => 'Unordered list',
+                    'type' => 'list'
+                ),
+                array(
+                    'image' => 'quote.png',
+                    'name' => 'quoteBtn',
+                    'title' => 'Quoting text',
+                    'type' => 'quote'
+                )
             )
         );
-        
+
         $articleData ['BBEditor'] = $bbEditorConfiguration;
-        
+
         $this->view->articleData = $articleData;
-        
 
         /**
          * Get a bunch of labels
          */
-        
+
         $this->view->labelLabel = ucwords(
             $this->_titleHelper->getTitle(
                 'http://www.w3.org/2000/01/rdf-schema#label',

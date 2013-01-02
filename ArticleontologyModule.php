@@ -2,7 +2,7 @@
 /**
  * This file is part of the {@link http://ontowiki.net OntoWiki} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @copyright Copyright (c) 2013, {@link http://aksw.org AKSW}
  * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
@@ -34,7 +34,7 @@ class ArticleontologyModule extends OntoWiki_Module
 
         // get contentDatatype from config
         $this->_contentDatatype = $this->_privateConfig->get('contentDatatype');
-        
+
         // get language
         $this->_language = OntoWiki::getInstance()->config->languages->locale;
 
@@ -84,7 +84,7 @@ class ArticleontologyModule extends OntoWiki_Module
     public function getContents()
     {
         /**
-         * 
+         *
          */
         $this->view->headStyle()->prependStyle($this->view->articleCssUrl . 'module/articleontologyModule.css');
 
