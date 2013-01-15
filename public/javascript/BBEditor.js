@@ -70,8 +70,7 @@ var System = (function () {
     System.setupAjax = function setupAjax() {
         $.ajaxSetup({
             "async": true,
-            "cache": false,
-            "type": "POST"
+            "cache": false
         });
         $.support.cors = true;
     }

@@ -103,8 +103,7 @@ class System {
     static setupAjax () : void {
         $.ajaxSetup({
             "async": true,
-            "cache": false,
-            "type": "POST"
+            "cache": false
         });
         
         $.support.cors = true;
