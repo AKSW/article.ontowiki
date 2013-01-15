@@ -135,7 +135,6 @@ class ArticleController extends OntoWiki_Controller_Component
             $articleData = array (
                 'r'                         => $this->_r,
                 'rLabel'                    => $rLabel,
-                'rDescription'              => $resource[$this->_privateConfig->get('contentProperty')][0]['content'],
                 'articleUrl'                => $this->view->articleUrl,
                 'articleImagesUrl'          => $this->view->articleImagesUrl,
                 'insertUpdateInformation'   => array(
@@ -150,7 +149,11 @@ class ArticleController extends OntoWiki_Controller_Component
                     'resourceLabelLang'     => $resource[$newArticleResourceLabelType][0]['lang'],
                 )
             );
-
+            if (false === isset($resource[$this->_privateConfig->get('contentProperty')])) {
+                $articleData['rDescription'] = '';
+            } else {
+                $articleData['rDescription'] = $resource[$this->_privateConfig->get('contentProperty')][0]['content'];
+            }
             // site window title
             $this->view->placeholder('main.window.title')
                ->set('Set an article for \'' . $rLabel .'\'');
