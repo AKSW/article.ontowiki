@@ -129,9 +129,17 @@ class ArticleController extends OntoWiki_Controller_Component
 
             $resource = $resource->getValues();
             $resource = $resource[$modelIri];
+            $rLabel = '';
+            if (isset($resource[$this->_privateConfig->get('newArticleResourceLabelType')]))
+                $rLabel = $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'];
 
-            $rLabel = $resource[$this->_privateConfig->get('newArticleResourceLabelType')][0]['content'];
-
+            $resourceLabelDataType = isset($resource[$newArticleResourceLabelType][0]['datatype']) ?
+                $resource[$newArticleResourceLabelType][0]['datatype'] :
+                '';
+            $resourceLabelLang = isset($resource[$newArticleResourceLabelType][0]['lang']) ?
+                $resource[$newArticleResourceLabelType][0]['lang'] :
+                '';
+            
             $articleData = array (
                 'r'                         => $this->_r,
                 'rLabel'                    => $rLabel,
@@ -145,8 +153,8 @@ class ArticleController extends OntoWiki_Controller_Component
                     'contentPropertyUri'    => $this->_contentProperty,
                     'contentDatatype'       => $this->_contentDatatype,
                     'resourceLabelUri'      => $this->_privateConfig->get('newArticleResourceLabelType'),
-                    'resourceLabelDataType' => $resource[$newArticleResourceLabelType][0]['datatype'],
-                    'resourceLabelLang'     => $resource[$newArticleResourceLabelType][0]['lang'],
+                    'resourceLabelDataType' => $resourceLabelDataType,
+                    'resourceLabelLang'     => $resourceLabelLang,
                 )
             );
             if (false === isset($resource[$this->_privateConfig->get('contentProperty')])) {

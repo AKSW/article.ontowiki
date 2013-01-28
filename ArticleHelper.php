@@ -13,7 +13,6 @@ class ArticleHelper extends OntoWiki_Component_Helper
      */
     public function init()
     {
-
         if ('properties' == OntoWiki::getInstance()->lastRoute) {
             // Show tab only if model is selected and editable
             $modelIsSelected = null != OntoWiki::getInstance()->selectedModel;
